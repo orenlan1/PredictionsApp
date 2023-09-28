@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/PredictionsApp.iml" filepath="$PROJECT_DIR$/PredictionsApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/PredictionsWeb/PredictionsWeb.iml" filepath="$PROJECT_DIR$/src/PredictionsWeb/PredictionsWeb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/dto/dto.iml" filepath="$PROJECT_DIR$/src/dto/dto.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/engine/engine.iml" filepath="$PROJECT_DIR$/src/engine/engine.iml" />
+    </modules>
+  </component>
+</project>
