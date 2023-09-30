@@ -1,6 +1,6 @@
 package predictions.api;
 
-import components.queue.management.ThreadPoolDelegate;
+//import components.queue.management.ThreadPoolDelegate;
 import dto.*;
 import world.World;
 import world.exceptions.EntityPropertyNotExistException;
@@ -10,21 +10,22 @@ import java.util.Map;
 
 public interface PredictionsService {
     FileReaderDTO readFileAndLoad(String fileName);
-    SimulationInfoDTO getSimulationInformation();
-    void randomizeEnvProperties();
-    PropertiesDTO getEnvPropertiesDTO();
-    EnvVariableSetValidationDTO setEnvironmentVariables(List<UserInputEnvironmentVariableDTO> DTOs);
-    void setEntitiesPopulation(List<EntityInitializationDTO> DTOs);
-    List<EnvVariablesDTO> getEnvVariablesDTOList(Integer id);
-    Integer runSimulation(ThreadPoolDelegate threadPoolDelegate);
-    PastSimulationDTO getSimulationsDTO(Integer id);
-    HistogramDTO getHistogram(Integer id, String entityName, String propertyName);
-    Double getConsistency(Integer id, String entityName, String propertyName);
-    MeanPropertyDTO getMeanOfProperty(Integer id, String entityName, String propertyName) throws EntityPropertyNotExistException;
-    Map<Integer, Boolean> getAllSimulationsStatus();
-    void pauseSimulation(Integer id);
-    void resumeSimulation(Integer id);
-    void stopSimulation(Integer id);
+    void setThreadCount(Integer threadCount);
+    SimulationInfoDTO getSimulationInformation(String name);
+    void randomizeEnvProperties(String name);
+    PropertiesDTO getEnvPropertiesDTO(String name);
+    EnvVariableSetValidationDTO setEnvironmentVariables(String name, List<UserInputEnvironmentVariableDTO> DTOs);
+    void setEntitiesPopulation(String name, List<EntityInitializationDTO> DTOs);
+    List<EnvVariablesDTO> getEnvVariablesDTOList(String name, Integer id);
+    //Integer runSimulation(ThreadPoolDelegate threadPoolDelegate);
+    PastSimulationDTO getSimulationsDTO(String name, Integer id);
+    HistogramDTO getHistogram(String name, Integer id, String entityName, String propertyName);
+    Double getConsistency(String name, Integer id, String entityName, String propertyName);
+    MeanPropertyDTO getMeanOfProperty(String name, Integer id, String entityName, String propertyName) throws EntityPropertyNotExistException;
+    //Map<Integer, Boolean> getAllSimulationsStatus();
+    void pauseSimulation(String name, Integer id);
+    void resumeSimulation(String name, Integer id);
+    void stopSimulation(String name, Integer id);
 }
 
 

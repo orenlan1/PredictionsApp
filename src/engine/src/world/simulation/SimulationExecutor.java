@@ -1,6 +1,6 @@
 package world.simulation;
 
-import components.queue.management.ThreadPoolDelegate;
+//import components.queue.management.ThreadPoolDelegate;
 import dto.SimulationRunnerDTO;
 import world.World;
 import world.action.api.Action;
@@ -17,11 +17,11 @@ import java.util.*;
 public class SimulationExecutor implements Runnable {
     private World world;
     private SimulationRunnerDTO simulationRunnerDTO;
-    private ThreadPoolDelegate threadPoolDelegate;
+    /*private ThreadPoolDelegate threadPoolDelegate;
 
     public SimulationExecutor(ThreadPoolDelegate threadPoolDelegate) {
         this.threadPoolDelegate = threadPoolDelegate;
-    }
+    }*/
 
     public void setWorld(World world) { this.world = world; }
 
@@ -29,7 +29,7 @@ public class SimulationExecutor implements Runnable {
 
     @Override
     public void run() {
-        threadPoolDelegate.decreaseSimulationsInQueue();
+        /*threadPoolDelegate.decreaseSimulationsInQueue();
         threadPoolDelegate.increaseRunningSimulations();
         Integer seconds = world.getTermination().getSecondCount();
         Integer ticks = world.getTermination().getTicksCount();
@@ -52,7 +52,7 @@ public class SimulationExecutor implements Runnable {
         else if (ticks != null)
             simulationRunnerDTO = new SimulationRunnerDTO(Boolean.TRUE, null, world.getSimulationID(), Boolean.TRUE);
         else
-            simulationRunnerDTO = new SimulationRunnerDTO(Boolean.TRUE, null, world.getSimulationID(), Boolean.FALSE);
+            simulationRunnerDTO = new SimulationRunnerDTO(Boolean.TRUE, null, world.getSimulationID(), Boolean.FALSE);*/
     }
 
     public void simulationRulesPerform(World world, Integer seconds, Integer ticks) throws Exception {

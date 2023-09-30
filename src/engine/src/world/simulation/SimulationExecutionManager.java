@@ -2,41 +2,50 @@ package world.simulation;
 
 import world.World;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class SimulationExecutionManager {
 
-    private Map<Integer, World> idToWorld;
+    private Map<String, Map<Integer, World>> nameToIdToWorld;
     ExecutorService threadExecutor;
     private int simulationId = 0;
 
 
-    public SimulationExecutionManager(int threadCount) {
-        this.idToWorld = new LinkedHashMap<>();
-        this.threadExecutor = Executors.newFixedThreadPool(threadCount);
+    public SimulationExecutionManager() {
+        this.nameToIdToWorld = new LinkedHashMap<>();
+        this.threadExecutor = Executors.newFixedThreadPool(1);
     }
 
-    public World getMainWorld() {
-        return idToWorld.get(0);
+    public void setThreadCount(int threadCount) {
+        threadExecutor = Executors.newFixedThreadPool(threadCount);
+    }
+
+    public World getMainWorld(String name) {
+        return nameToIdToWorld.get(name).get(0);
     }
 
     public ExecutorService getThreadExecutor() {
         return threadExecutor;
     }
 
-    public void addWorldSimulation(World newWorld) {
-        newWorld.setSimulationID(simulationId);
-        this.idToWorld.put(simulationId++, newWorld);
+    public void addWorldSimulation(String name, World newWorld, boolean prime) {
+        Map<Integer, World> idToWorld = new LinkedHashMap<>();
+        int evaluatedSimulationID = prime ? 0 : ++simulationId;
+        newWorld.setSimulationID(evaluatedSimulationID);
+        idToWorld.put(evaluatedSimulationID, newWorld);
+        nameToIdToWorld.put(name, idToWorld);
     }
 
-    public World getSpecificWorld(Integer id) {
-        return idToWorld.getOrDefault(id, null);
+    public World getSpecificWorld(String name, Integer id) {
+        return nameToIdToWorld.get(name).get(id);
     }
 
-    public Collection<Integer> getAllSimulationsID() { return idToWorld.keySet(); }
+    //TODO - fix this function according to iur future need of it
+    public Collection<String> getAllSimulationNames() {
+        return nameToIdToWorld.keySet();
+    }
 }
