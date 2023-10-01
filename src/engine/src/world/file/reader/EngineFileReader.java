@@ -1,7 +1,8 @@
 package world.file.reader;
 
-import jaxb.generated.*;
+//import jaxb.generated.*;
 //import generated.*;
+import jaxbv3.generated.*;
 import world.World;
 import world.entity.api.EntityDefinition;
 import world.environment.api.ActiveEnvironment;
@@ -20,18 +21,18 @@ import java.io.InputStream;
 import java.util.List;
 
 public class EngineFileReader {
-    private final static String JAXB_XML_PACKAGE_NAME = "jaxb.generated";
+    private final static String JAXB_XML_PACKAGE_NAME = "jaxbv3.generated";
 
-    public World checkFileValidation(String fileName) throws Exception {
+    public World checkFileValidation(InputStream fileContent) throws Exception {
         World world = new World();
-        File file = new File(fileName);
-        if (!file.exists()) {
-            throw new Exception("The xml file does not exist.");
-        }
-        InputStream inputStream = new FileInputStream(file);
+//        File file = new File(fileName);
+//        if (!file.exists()) {
+//            throw new Exception("The xml file does not exist.");
+//        }
+//        InputStream inputStream = new FileInputStream(file);
         JAXBContext jc = JAXBContext.newInstance(JAXB_XML_PACKAGE_NAME);
         Unmarshaller u = jc.createUnmarshaller();
-        PRDWorld prdWorld = (PRDWorld) u.unmarshal(inputStream);
+        PRDWorld prdWorld = (PRDWorld) u.unmarshal(fileContent);
 
         //translations
         EnvironmentVariablesManager environmentVariablesManager = EnvironmentTranslator.translateEnvironment(prdWorld.getPRDEnvironment());
@@ -56,14 +57,19 @@ public class EngineFileReader {
             world.addRule(newRule);
         }
 
+        // Setting world name
+        world.setName(prdWorld.getName());
+
         // Setting termination
-        Termination termination = TerminationTranslator.translateTermination(prdWorld.getPRDTermination());
-        world.setTermination(termination);
+        //Termination termination = TerminationTranslator.translateTermination(prdWorld.getPRDTermination());
+        //world.setTermination(termination);
         // Setting grid
         Grid grid = GridTranslator.translateGrid(prdWorld.getPRDGrid());
         world.setGrid(grid);
-        // Setting thread count
-        world.setThreadCount(prdWorld.getPRDThreadCount());
+
+        // Setting sleep
+        if ( prdWorld.getSleep() != null)
+            world.setSleep(prdWorld.getSleep());
 
         return world;
     }

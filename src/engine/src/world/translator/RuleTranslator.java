@@ -1,14 +1,14 @@
 package world.translator;
 
 
-import jaxb.generated.PRDRule;
-import jaxb.generated.PRDAction;
-import jaxb.generated.PRDActivation;
-import jaxb.generated.PRDThen;
-import jaxb.generated.PRDElse;
-import jaxb.generated.PRDCondition;
-import jaxb.generated.PRDDivide;
-import jaxb.generated.PRDMultiply;
+import jaxbv3.generated.PRDRule;
+import jaxbv3.generated.PRDAction;
+import jaxbv3.generated.PRDActivation;
+import jaxbv3.generated.PRDThen;
+import jaxbv3.generated.PRDElse;
+import jaxbv3.generated.PRDCondition;
+import jaxbv3.generated.PRDDivide;
+import jaxbv3.generated.PRDMultiply;
 import world.action.api.Action;
 import world.action.impl.*;
 import world.context.Context;

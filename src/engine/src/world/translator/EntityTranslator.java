@@ -1,8 +1,8 @@
 package world.translator;
 
 
-import jaxb.generated.PRDEntities;
-import jaxb.generated.PRDEntity;
+import jaxbv3.generated.PRDEntities;
+import jaxbv3.generated.PRDEntity;
 
 import world.entity.api.EntityDefinition;
 import world.entity.impl.EntityDefinitionImpl;

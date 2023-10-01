@@ -1,6 +1,6 @@
 package world.translator;
 
-import jaxb.generated.PRDWorld.PRDGrid;
+import jaxbv3.generated.PRDWorld.PRDGrid;
 import world.exceptions.GridException;
 import world.grid.Grid;
 

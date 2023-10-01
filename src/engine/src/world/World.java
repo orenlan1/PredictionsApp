@@ -17,6 +17,7 @@ import world.simulation.PastSimulation;
 import world.termination.Termination;
 
 public class World implements Serializable {
+    private String name;
     private final Map<String, EntityDefinition> nameToEntityDefinition;
     private EnvironmentVariablesManager environmentVariablesManager;
     private ActiveEnvironment activeEnvironment;
@@ -28,6 +29,7 @@ public class World implements Serializable {
     private PastSimulation pastSimulation;
     private Grid grid;
     private int threadCount;
+    private int sleep;
     private boolean paused;
     private boolean stopped;
     private final Grid pauseLock;
@@ -117,6 +119,18 @@ public class World implements Serializable {
 
     public Termination getTermination() {
         return termination;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setSleep(int sleep) {
+        this.sleep = sleep;
     }
 
     public void setTermination(Termination termination) {

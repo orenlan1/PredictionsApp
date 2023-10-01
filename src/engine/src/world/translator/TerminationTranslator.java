@@ -1,8 +1,8 @@
 package world.translator;
 
-import jaxb.generated.PRDBySecond;
-import jaxb.generated.PRDByTicks;
-import jaxb.generated.PRDTermination;
+import jaxbv3.generated.PRDBySecond;
+import jaxbv3.generated.PRDByTicks;
+import jaxbv3.generated.PRDTermination;
 import world.termination.Termination;
 
 import java.util.List;

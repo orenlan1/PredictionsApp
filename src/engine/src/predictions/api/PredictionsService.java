@@ -5,11 +5,12 @@ import dto.*;
 import world.World;
 import world.exceptions.EntityPropertyNotExistException;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 public interface PredictionsService {
-    FileReaderDTO readFileAndLoad(String fileName);
+    FileReaderDTO readFileAndLoad(InputStream fileContent);
     void setThreadCount(Integer threadCount);
     SimulationInfoDTO getSimulationInformation(String name);
     void randomizeEnvProperties(String name);

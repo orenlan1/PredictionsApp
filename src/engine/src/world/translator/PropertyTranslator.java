@@ -1,8 +1,8 @@
 package world.translator;
 
 
-import jaxb.generated.PRDProperties;
-import jaxb.generated.PRDProperty;
+import jaxbv3.generated.PRDProperties;
+import jaxbv3.generated.PRDProperty;
 import world.exceptions.InvalidVariableTypeException;
 import world.property.api.PropertyDefinition;
 import world.property.impl.BooleanPropertyDefinition;

@@ -1,0 +1,12 @@
+#threadsNumber{
+    -fx-font-weight: bold;
+    -fx-text-fill: #F79D9D;
+}
+
+.scroll-pane {
+    -fx-background: none;
+}
+
+.button {
+    -fx-font-weight: bold;
+}

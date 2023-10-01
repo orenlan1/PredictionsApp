@@ -23,6 +23,7 @@ import world.simulation.SimulationExecutionManager;
 import world.simulation.SimulationExecutor;
 import world.simulation.SimulationInfoBuilder;
 
+import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -36,18 +37,18 @@ public class PredictionsServiceImpl implements PredictionsService {
     }
 
     @Override
-    public FileReaderDTO readFileAndLoad(String fileName) {
+    public FileReaderDTO readFileAndLoad(InputStream fileContent) {
        World mainWorld = null;
        EngineFileReader fileReader = new EngineFileReader();
        try {
-           mainWorld = fileReader.checkFileValidation(fileName);
+           mainWorld = fileReader.checkFileValidation(fileContent);
        } catch (Exception e) {
-           return new FileReaderDTO(Boolean.FALSE, e.getMessage(), null);
+           return new FileReaderDTO(Boolean.FALSE, e.getMessage(), null,null);
        }
        //TODO after switch to ex3 files - add name to simulation instead of fileName
-       simulationManager.addWorldSimulation(fileName, mainWorld, true);
+       simulationManager.addWorldSimulation(mainWorld.getName(), mainWorld, true);
        Grid grid = mainWorld.getGrid();
-       return new FileReaderDTO(Boolean.TRUE, null, new GridDTO(grid.getRows(), grid.getCols()));
+       return new FileReaderDTO(Boolean.TRUE, null, new GridDTO(grid.getRows(), grid.getCols()), mainWorld.getName());
     }
 
     @Override

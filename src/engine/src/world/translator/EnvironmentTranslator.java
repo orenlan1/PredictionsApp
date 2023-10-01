@@ -1,8 +1,8 @@
 package world.translator;
 
 
-import jaxb.generated.PRDEnvProperty;
-import jaxb.generated.PRDEnvironment;
+import jaxbv3.generated.PRDEnvProperty;
+import jaxbv3.generated.PRDEnvironment;
 import world.environment.api.EnvironmentVariablesManager;
 import world.environment.impl.EnvironmentVariablesManagerImpl;
 import world.exceptions.EnvironmentVariableNameExistException;
