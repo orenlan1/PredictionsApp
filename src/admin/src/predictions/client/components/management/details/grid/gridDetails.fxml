@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane fx:id="gridCardGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="300.0" styleClass="gridCard" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="predictions.client.components.management.details.grid.GridCardController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="20.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="15.0" prefHeight="25.0" vgrow="NEVER" />
+      <RowConstraints maxHeight="48.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="54.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="15.0" prefHeight="25.0" vgrow="NEVER" />
+   </rowConstraints>
+   <children>
+      <ImageView id="gridIcon" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+         <image>
+            <Image url="@gridIcon.png" />
+         </image>
+      </ImageView>
+      <Label styleClass="axisLabel" text="X axis" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" fx:id="xAxisLabel">
+         <padding>
+            <Insets left="15.0" />
+         </padding></Label>
+      <Label fx:id="yAxisLabel" styleClass="terminationLabel" text="Y axis" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
+         <padding>
+            <Insets left="15.0" />
+         </padding></Label>
+   </children>
+</GridPane>

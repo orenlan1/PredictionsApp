@@ -1,0 +1,12 @@
+.label {
+    -fx-font-size: 13px;
+    -fx-font-family: Verdana;
+    -fx-font-weight: normal;
+}
+
+.gridCard {
+    -fx-background-color: white;
+    -fx-background-radius: 15px;
+    -fx-border-color: black;
+    -fx-border-radius: 15px;
+}

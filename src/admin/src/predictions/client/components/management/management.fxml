@@ -77,7 +77,7 @@
                                        </font>
                                     </Label>
                                     <Button fx:id="envVariablesButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showEnvVariables" prefHeight="40.0" prefWidth="180.0" styleClass="details" text="Environment Variables" />
-                                    <Button fx:id="gridAndTerminationButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showGridAndTermination" prefHeight="40.0" prefWidth="180.0" styleClass="details" text="Grid and Termination" />
+                                    <Button fx:id="gridButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showGrid" prefHeight="40.0" prefWidth="180.0" styleClass="details" text="Grid " />
                                     <Button fx:id="entitiesButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showEntities" prefHeight="40.0" prefWidth="180.0" styleClass="details" text="Entities" />
                                     <Button fx:id="rulesButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showRules" prefHeight="40.0" prefWidth="180.0" styleClass="details" text="Rules" />
                                     <Button id="clearButton" fx:id="clearButton" layoutX="30.0" layoutY="268.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clearDetails" prefHeight="40.0" prefWidth="180.0" styleClass="details" text="Clear details" />

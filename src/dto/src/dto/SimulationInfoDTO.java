@@ -5,12 +5,14 @@ import java.util.List;
 public class SimulationInfoDTO {
     private final List<EntityDTO> entitiesList;
     private final List<RuleDTO> rulesList;
-    private final TerminationDTO termination;
+    private final List<PropertyDTO> envVariablesList;
+    private final GridDTO grid;
 
     public SimulationInfoDTO(List<EntityDTO> entitiesList, List<RuleDTO> rulesList, TerminationDTO termination) {
         this.entitiesList = entitiesList;
         this.rulesList = rulesList;
-        this.termination = termination;
+        this.envVariablesList = envVariablesList;
+        this.grid = grid;
     }
     public List<EntityDTO> getEntitiesList() {
         return entitiesList;
@@ -21,8 +23,10 @@ public class SimulationInfoDTO {
         return rulesList;
     }
 
-    public TerminationDTO getTermination() {
-        return termination;
+    public List<PropertyDTO> getEnvVariablesList() {return envVariablesList; }
+
+    public GridDTO getGrid() {
+        return grid;
     }
 }
 

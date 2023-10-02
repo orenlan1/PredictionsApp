@@ -11,11 +11,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import okhttp3.*;
@@ -29,6 +31,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import predictions.client.components.management.details.entity.EntityCardController;
+import predictions.client.components.management.details.environment.variable.EnvVariableCardController;
+import predictions.client.components.management.details.grid.GridCardController;
+import predictions.client.components.management.details.rules.manager.RulesManagerController;
 import predictions.client.util.http.HttpAdminClientUtil;
 import static predictions.client.util.Constants.*;
 
@@ -61,7 +67,7 @@ public class ManagementController implements Initializable {
     private Label filePathLabel;
 
     @FXML
-    private Button gridAndTerminationButton;
+    private Button gridButton;
 
     @FXML
     private Button loadFileButton;
@@ -103,7 +109,7 @@ public class ManagementController implements Initializable {
         envVariablesButton.disableProperty().bind(isFileLoaded.not());
         entitiesButton.disableProperty().bind(isFileLoaded.not());
         rulesButton.disableProperty().bind(isFileLoaded.not());
-        gridAndTerminationButton.disableProperty().bind(isFileLoaded.not());
+        gridButton.disableProperty().bind(isFileLoaded.not());
         filePathLabel.textProperty().bind(Bindings.concat("File path: ", loadedFilePathProperty));
 
 
@@ -139,7 +145,7 @@ public class ManagementController implements Initializable {
                 .addFormDataPart("file", selectedFile.getAbsolutePath(), RequestBody.create(selectedFile,MediaType.parse("text/plain")))
                 .build();
 
-        String finalUrl = PREFIX_BASE_URL + "/predictions/loadFile";
+        String finalUrl = PREFIX_BASE_URL + "/loadFile";
         Request request = new Request.Builder()
                 .url(finalUrl)
                 .post(body)
@@ -167,6 +173,7 @@ public class ManagementController implements Initializable {
                 alert.show();
             }
         }
+
 //        HttpAdminClientUtil.asyncFileLoad(finalUrl, body, new Callback() {
 //            @Override
 //            public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -205,8 +212,22 @@ public class ManagementController implements Initializable {
     }
 
     @FXML
-    void showEntities(ActionEvent event) {
+    void showEntities(ActionEvent event) throws Exception {
+        detailsFlowPane.getChildren().clear();
+        detailsBorderPane.setCenter(detailsScrollPane);
 
+        for (EntityDTO dto: simulationDetails.getEntitiesList()) {
+            URL entityDetailsFXML = getClass().getResource("/predictions/client/components/management/details/entity/entityDetails.fxml");
+            FXMLLoader loader = new FXMLLoader(entityDetailsFXML);
+            GridPane entityCard = loader.load();
+
+            EntityCardController entityCardController = loader.getController();
+            entityCardController.setName(dto.getEntityName());
+            entityCardController.setProperties(dto.getPropertiesList());
+            entityCard.getStylesheets().add("/predictions/client//components/management/details/entity/entity.css");
+
+            detailsFlowPane.getChildren().add(entityCard);
+        }
     }
 
     @FXML
@@ -215,7 +236,18 @@ public class ManagementController implements Initializable {
     }
 
     @FXML
-    void showGridAndTermination(ActionEvent event) {
+    void showGrid(ActionEvent event) throws Exception{
+        detailsFlowPane.getChildren().clear();
+        detailsBorderPane.setCenter(detailsScrollPane);
+        URL gridDetailsFXML = getClass().getResource("/predictions/client/components/management/details/grid/gridDetails.fxml");
+        FXMLLoader loader = new FXMLLoader(gridDetailsFXML);
+        GridPane gridCard = loader.load();
+
+        GridCardController gridCardController = loader.getController();
+        gridCardController.setAxisLabels(simulationDetails.getGrid().getX(), simulationDetails.getGrid().getY());
+        gridCard.getStylesheets().add("/predictions/client/components/management/details/grid/grid.css");
+
+        detailsFlowPane.getChildren().add(gridCard);
 
     }
 

@@ -45,8 +45,10 @@ public class PredictionsServiceImpl implements PredictionsService {
        } catch (Exception e) {
            return new FileReaderDTO(Boolean.FALSE, e.getMessage(), null,null);
        }
-       //TODO after switch to ex3 files - add name to simulation instead of fileName
-       simulationManager.addWorldSimulation(mainWorld.getName(), mainWorld, true);
+       if (!simulationManager.getAllSimulationNames().contains(mainWorld.getName()))
+            simulationManager.addWorldSimulation(mainWorld.getName(), mainWorld, true);
+       else
+           return new FileReaderDTO(Boolean.FALSE, "Simulation name already exists", null,null);
        Grid grid = mainWorld.getGrid();
        return new FileReaderDTO(Boolean.TRUE, null, new GridDTO(grid.getRows(), grid.getCols()), mainWorld.getName());
     }

@@ -4,6 +4,7 @@ import dto.*;
 import world.action.api.ActionType;
 import world.action.impl.MultipleCondition;
 import world.action.impl.SingularCondition;
+import world.grid.Grid;
 import world.property.api.PropertyInstance;
 import world.termination.Termination;
 import world.action.api.Action;
@@ -77,5 +78,9 @@ public class DTOFactory {
 
     public EnvVariablesDTO createEnvVariableDTO(PropertyInstance envVariable) {
         return new EnvVariablesDTO(envVariable.getPropertyDefinition().getName(), envVariable.getValue().toString());
+    }
+
+    public GridDTO createGridDTO(Grid grid) {
+        return new GridDTO(grid.getCols(), grid.getRows());
     }
 }
