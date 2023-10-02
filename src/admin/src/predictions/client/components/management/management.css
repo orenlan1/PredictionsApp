@@ -3,10 +3,18 @@
     -fx-text-fill: #F79D9D;
 }
 
-.scroll-pane {
-    -fx-background: none;
+#clearButton {
+    -fx-font-weight: bold;
 }
 
-.button {
-    -fx-font-weight: bold;
+.scroll-pane {
+    -fx-background: null;
+}
+
+.table-row-cell:empty {
+    -fx-background-color: null;
+}
+
+.table-row-cell:empty .table-cell {
+    -fx-border-width: 0px;
 }

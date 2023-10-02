@@ -30,7 +30,6 @@ public class ThreadCountServlet extends HttpServlet {
             threadCount = gson.fromJson(jsonBody.toString(), JsonObject.class).get("threadCount").getAsInt();
 
             predictionsService.setThreadCount(threadCount);
-            resp.getWriter().println(new Gson().toJson(threadCount));
         } catch (NumberFormatException e) {
             //TODO
             //add exception handler

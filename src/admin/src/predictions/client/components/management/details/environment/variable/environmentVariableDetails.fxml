@@ -10,7 +10,7 @@
 
 <GridPane fx:id="envVariableCardGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="400.0" styleClass="envVariableCard" stylesheets="@envVariables.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="predictions.client.components.management.details.environment.variable.EnvVariableCardController">
    <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="120.0" prefWidth="150.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="90.0" prefWidth="90.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="170.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
    </columnConstraints>
@@ -31,17 +31,35 @@
             <Insets left="20.0" />
          </GridPane.margin>
       </ImageView>
-      <Label fx:id="typeLabel" styleClass="propertiesLabel" text="Type:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Label fx:id="nameLabel" styleClass="envVariableLabel" text="Name: " GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-      <Label fx:id="fromLabel" text="From:" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+      <Label fx:id="typeLabel" styleClass="propertiesLabel" text="Type:" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
          <padding>
-            <Insets left="30.0" />
+            <Insets left="10.0" />
+         </padding></Label>
+      <Label fx:id="nameLabel" styleClass="envVariableLabel" text="Name: " GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <padding>
+            <Insets left="10.0" />
+         </padding></Label>
+      <Label fx:id="fromLabel" text="From:" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+         <padding>
+            <Insets left="10.0" />
          </padding>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
       </Label>
-      <Label fx:id="toLabel" text="To:" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+      <Label fx:id="toLabel" text="To:" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
          <padding>
-            <Insets left="30.0" />
+            <Insets left="10.0" />
          </padding>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
       </Label>
    </children>
 </GridPane>

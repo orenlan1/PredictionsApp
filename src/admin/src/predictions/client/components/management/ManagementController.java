@@ -1,6 +1,5 @@
 package predictions.client.components.management;
 
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -16,7 +15,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -85,7 +83,22 @@ public class ManagementController implements Initializable {
     private TableView<String> simulationsTable;
 
     @FXML
+    private Label threadCountLabel;
+
+    @FXML
+    private Label currentlyRunningCounter;
+
+    @FXML
+    private Label inQueueCounter;
+
+    @FXML
+    private Label finishedCounter;
+
+    @FXML
     private Button threadsCountButton;
+
+    @FXML
+    private TextField threadCountInput;
 
     private ObservableList<String> tableData = FXCollections.observableArrayList();
 
@@ -114,6 +127,17 @@ public class ManagementController implements Initializable {
         rulesButton.disableProperty().bind(isFileLoaded.not());
         gridButton.disableProperty().bind(isFileLoaded.not());
         filePathLabel.textProperty().bind(Bindings.concat("File path: ", loadedFilePathProperty));
+        threadsCountButton.disableProperty().bind(threadCountInput.textProperty().isEmpty());
+
+        threadCountInput.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                try {
+                    Integer.parseInt(newValue);
+                } catch (NumberFormatException e) {
+                    threadCountInput.setText(oldValue);
+                }
+            }
+        });
 
         simulationsTable.setRowFactory(tv -> {
             TableRow<String> row = new TableRow<>();
@@ -233,8 +257,28 @@ public class ManagementController implements Initializable {
     }
 
     @FXML
-    void setThreadsCount(ActionEvent event) {
+    void setThreadsCount(ActionEvent event) throws IOException {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("threadCount", threadCountInput.getText());
+        String jsonObjectAsString = jsonObject.toString();
+        RequestBody body = RequestBody.create(MediaType.get("application/json; charset=utf-8"), jsonObjectAsString);
 
+        String finalUrl = PREFIX_BASE_URL + "/threadCount";
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .post(body)
+                .build();
+        Call call = HttpAdminClientUtil.HTTP_CLIENT.newCall(request);
+        Response response = call.execute();
+
+        Alert alert =  new Alert(Alert.AlertType.INFORMATION, "Thread count set successfully!");
+        if (response.isSuccessful())
+            threadCountLabel.setText(threadCountInput.getText());
+        else
+            alert =  new Alert(Alert.AlertType.ERROR, "Could not set thread count");
+
+        alert.setHeaderText(null);
+        alert.show();
     }
 
     @FXML

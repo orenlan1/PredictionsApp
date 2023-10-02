@@ -17,6 +17,7 @@ import world.entity.api.EntityDefinition;
 import world.environment.api.ActiveEnvironment;
 import world.exceptions.*;
 import world.expressions.ExpressionDecoder;
+import world.expressions.impl.ValueExpression;
 import world.property.api.AbstractPropertyDefinition;
 import world.property.api.PropertyDefinition;
 import world.rule.activation.Activation;
@@ -180,10 +181,14 @@ public class RuleTranslator {
                 Expression expressionArg1 = ExpressionDecoder.decode(prdDivide.getArg1(),activeEnvironment,entityDefinition,type,"calculation", secondaryEntity, entitiesContext);
                 Expression expressionArg2 = ExpressionDecoder.decode(prdDivide.getArg2(),activeEnvironment,entityDefinition,type,"calculation", secondaryEntity, entitiesContext);
                 String exp1Type = expressionArg1.getType(), exp2Type = expressionArg2.getType();
-                if ((exp1Type.equals("decimal") || exp1Type.equals("float")) && (exp2Type.equals("decimal") || exp2Type.equals("float")))
-                    if ((float) expressionArg2.evaluate(null) != 0) {
-                        return new DivisionAction(entityDefinition, propertyDefinition, expressionArg1, expressionArg2, secondaryEntity, entitiesContext);
-                    } else throw new Exception("Division by zero! Invalid xml file");
+                if ((exp1Type.equals("decimal") || exp1Type.equals("float")) && (exp2Type.equals("decimal") || exp2Type.equals("float"))) {
+                    if (expressionArg2 instanceof ValueExpression) {
+                        if ((float) expressionArg2.evaluate(null) == 0) {
+                            throw new Exception("Division by zero! Invalid xml file");
+                        }
+                    }
+                    return new DivisionAction(entityDefinition, propertyDefinition, expressionArg1, expressionArg2, secondaryEntity, entitiesContext);
+                }
                 else
                     throw new MismatchTypesException("Expression in division action", "Decimal or Float", exp1Type + ", " + exp2Type);
             }
