@@ -44,7 +44,6 @@ public class SimulationExecutionManager {
         return nameToIdToWorld.get(name).get(id);
     }
 
-    //TODO - fix this function according to iur future need of it
     public Collection<String> getAllSimulationNames() {
         return nameToIdToWorld.keySet();
     }

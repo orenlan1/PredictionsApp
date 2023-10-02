@@ -1,12 +1,10 @@
 package world.simulation;
 
-import dto.EntityDTO;
-import dto.RuleDTO;
-import dto.SimulationInfoDTO;
-import dto.TerminationDTO;
+import dto.*;
 import world.World;
 import world.entity.api.EntityDefinition;
 import world.factory.DTOFactory;
+import world.property.api.PropertyDefinition;
 import world.rule.api.Rule;
 
 import java.util.*;
@@ -19,8 +17,12 @@ public class SimulationInfoBuilder {
         DTOFactory dtoFactory = new DTOFactory();
         List<EntityDTO> entityDTOList = createEntityDTOList(world.getNameToEntityDefinition());
         List<RuleDTO> ruleDTOList = createRuleDTOList(world.getRules());
-        TerminationDTO terminationDTO = dtoFactory.createTerminationDTO(world.getTermination());
-        return new SimulationInfoDTO(entityDTOList,ruleDTOList,terminationDTO);
+        List<PropertyDTO> envVariablesList = new ArrayList<>();
+        GridDTO gridDTO = dtoFactory.createGridDTO(world.getGrid());
+        for (PropertyDefinition envProperty : world.getEnvironmentVariablesManager().getEnvironmentVariables()) {
+            envVariablesList.add(dtoFactory.createPropertyDTO(envProperty));
+        }
+        return new SimulationInfoDTO(entityDTOList, ruleDTOList, envVariablesList, gridDTO);
     }
 
     public List<EntityDTO> createEntityDTOList(Map<String, EntityDefinition> nameToEntity) {

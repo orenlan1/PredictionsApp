@@ -1,9 +1,11 @@
 package predictions.client.components.management;
 
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import dto.FileReaderDTO;
+import dto.*;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,6 +29,7 @@ import predictions.client.components.main.AdminMainController;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -92,12 +95,12 @@ public class ManagementController implements Initializable {
     private Stage primaryStage;
     private final SimpleStringProperty loadedFilePathProperty;
     private final SimpleBooleanProperty isFileLoaded;
+    private SimulationInfoDTO simulationDetails;
 
 
     public ManagementController() {
         loadedFilePathProperty = new SimpleStringProperty("");
         isFileLoaded = new SimpleBooleanProperty(false);
-
     }
 
     @Override
@@ -112,13 +115,38 @@ public class ManagementController implements Initializable {
         gridButton.disableProperty().bind(isFileLoaded.not());
         filePathLabel.textProperty().bind(Bindings.concat("File path: ", loadedFilePathProperty));
 
-
         simulationsTable.setRowFactory(tv -> {
             TableRow<String> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 1 && !row.isEmpty()) {
                     String rowData = row.getItem();
                     loadedFilePathProperty.set(simNameToFilePath.get(rowData));
+
+                    HttpUrl.Builder urlBuilder = HttpUrl.parse(PREFIX_BASE_URL + "/details").newBuilder();
+                    urlBuilder.addQueryParameter("name", rowData);
+                    String finalUrl = urlBuilder.build().toString();
+                    HttpAdminClientUtil.runAsync(finalUrl, new Callback() {
+                        @Override
+                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                            Platform.runLater(() -> {
+                                Alert alert = new Alert(Alert.AlertType.ERROR, "HTTP error: " + e.getMessage());
+                                alert.setHeaderText(null);
+                                alert.show();
+                            });
+                        }
+
+                        @Override
+                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                            Platform.runLater(() -> {
+                                try {
+                                    simulationDetails = GSON_INSTANCE.fromJson(response.body().string(), SimulationInfoDTO.class);
+                                    int a = 1;
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            });
+                        }
+                    });
                 }
             });
             return row;
@@ -128,7 +156,7 @@ public class ManagementController implements Initializable {
 
     @FXML
     void clearDetails(ActionEvent event) {
-
+        
     }
 
     @FXML
@@ -202,8 +230,6 @@ public class ManagementController implements Initializable {
 //                }
 //            }
 //        });
-
-
     }
 
     @FXML
@@ -231,8 +257,21 @@ public class ManagementController implements Initializable {
     }
 
     @FXML
-    void showEnvVariables(ActionEvent event) {
+    void showEnvVariables(ActionEvent event) throws Exception {
+        detailsFlowPane.getChildren().clear();
+        detailsBorderPane.setCenter(detailsScrollPane);
 
+        for (PropertyDTO dto : simulationDetails.getEnvVariablesList()) {
+            URL envVariableDetailsFXML = getClass().getResource("/predictions/client/components/management/details/environment/variable/environmentVariableDetails.fxml");
+            FXMLLoader loader = new FXMLLoader(envVariableDetailsFXML);
+            GridPane envVariableCard = loader.load();
+
+            EnvVariableCardController envVariableCardController = loader.getController();
+            envVariableCardController.setEnvVariableCard(dto);
+            envVariableCard.getStylesheets().add("/predictions/client/components/management/details/environment/variable/envVariables.css");
+
+            detailsFlowPane.getChildren().add(envVariableCard);
+        }
     }
 
     @FXML
@@ -252,8 +291,16 @@ public class ManagementController implements Initializable {
     }
 
     @FXML
-    void showRules(ActionEvent event) {
+    void showRules(ActionEvent event) throws Exception {
+        detailsFlowPane.getChildren().clear();
 
+        URL rulesManagerDetailsFXML = getClass().getResource("/predictions/client/components/management/details/rules/manager/rulesManager.fxml");
+        FXMLLoader loader = new FXMLLoader(rulesManagerDetailsFXML);
+        BorderPane rulesManager = loader.load();
+
+        RulesManagerController rulesManagerController = loader.getController();
+        rulesManagerController.showRuleCards(simulationDetails.getRulesList());
+        detailsBorderPane.setCenter(rulesManager);
     }
 
 

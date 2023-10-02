@@ -120,7 +120,7 @@ public class SingularCondition extends ConditionAction {
         List<String> args =  new ArrayList<>();
         args.add(value.toString());
         args.add(operator);
-        args.add(propertyDefinition.getName());
+        args.add(property.toString());
         return args;
     }
 }

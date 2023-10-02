@@ -8,7 +8,7 @@ public class SimulationInfoDTO {
     private final List<PropertyDTO> envVariablesList;
     private final GridDTO grid;
 
-    public SimulationInfoDTO(List<EntityDTO> entitiesList, List<RuleDTO> rulesList, TerminationDTO termination) {
+    public SimulationInfoDTO(List<EntityDTO> entitiesList, List<RuleDTO> rulesList, List<PropertyDTO> envVariablesList, GridDTO grid) {
         this.entitiesList = entitiesList;
         this.rulesList = rulesList;
         this.envVariablesList = envVariablesList;
@@ -17,7 +17,6 @@ public class SimulationInfoDTO {
     public List<EntityDTO> getEntitiesList() {
         return entitiesList;
     }
-
 
     public List<RuleDTO> getRulesList() {
         return rulesList;
