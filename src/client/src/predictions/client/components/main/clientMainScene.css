@@ -1,4 +1,3 @@
-
 #predictionsLabel {
     -fx-font-size: 26px;
     -fx-font-weight: bold;
@@ -9,6 +8,11 @@
 
 #mainClientBorderPane {
     -fx-background-color: linear-gradient(to bottom right, #9DD7F7, #C7E2F0);
+}
+
+#usernameLabel {
+    -fx-text-fill: #1b4bea;
+    -fx-font-weight: bold;
 }
 
 .button {

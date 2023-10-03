@@ -10,31 +10,27 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="predictions.client.components.main.AdminMainController">
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="predictions.client.components.main.AdminMainController">
    <content>
-      <BorderPane id="mainAdminBorderPane" fx:id="mainAdminBorderPane" prefHeight="600.0" prefWidth="800.0">
+      <BorderPane id="mainAdminBorderPane" fx:id="mainAdminBorderPane">
          <top>
-            <GridPane maxHeight="100.0" maxWidth="800.0" minHeight="150.0" minWidth="800.0" prefHeight="100.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+            <GridPane minHeight="150.0" minWidth="800.0" BorderPane.alignment="CENTER">
               <columnConstraints>
                   <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="25.0" prefWidth="75.0" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="100.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="100.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="100.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="150.0" prefWidth="200.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="100.0" prefWidth="200.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="100.0" prefWidth="200.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="25.0" prefWidth="75.0" />
                 <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label id="predictionsLabel" text="Predictions - Administrator" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.halignment="CENTER">
+                  <Label id="predictionsLabel" text="Predictions - Administrator" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font name="System Bold" size="22.0" />
                      </font>
@@ -45,9 +41,9 @@
                         <Insets />
                      </GridPane.margin>
                   </Label>
-                  <Button fx:id="managementButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#viewManagement" prefHeight="40.0" prefWidth="140.0" text="Management" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                  <Button fx:id="allocationsButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#viewAllocations" prefHeight="40.0" prefWidth="140.0" text="Allocations" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-                  <Button fx:id="executionsHistoryButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#viewExecutionsHistory" prefHeight="40.0" prefWidth="140.0" text="Executions History" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                  <Button fx:id="managementButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#viewManagement" prefHeight="40.0" prefWidth="140.0" text="Management" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <Button fx:id="allocationsButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#viewAllocations" prefHeight="40.0" prefWidth="140.0" text="Allocations" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <Button fx:id="executionsHistoryButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#viewExecutionsHistory" prefHeight="40.0" prefWidth="140.0" text="Executions History" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
                </children>
             </GridPane>
          </top>

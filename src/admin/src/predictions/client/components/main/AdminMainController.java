@@ -71,8 +71,8 @@ public class AdminMainController extends ResourceBundle {
             BorderPane managementPane = fxmlLoader.load();
             managementController = fxmlLoader.getController();
             managementController.setAdminMainController(this);
-            String mainCss = this.getClass().getResource(MANAGEMENT_CSS_LOCATION).toExternalForm();
-            managementPane.getStylesheets().add(mainCss);
+            String managementCss = this.getClass().getResource(MANAGEMENT_CSS_LOCATION).toExternalForm();
+            managementPane.getStylesheets().add(managementCss);
 
         } catch (IOException e) {
             e.printStackTrace();

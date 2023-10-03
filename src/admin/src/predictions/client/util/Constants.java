@@ -8,7 +8,6 @@ public class Constants {
     public final static String MAIN_FXML_LOCATION = "/predictions/client/components/main/adminMainScene.fxml";
     public final static String MANAGEMENT_FXML_LOCATION =  "/predictions/client/components/management/management.fxml";
 
-
     public final static String RULES_DETAILS_FXML_LOCATION = "/predictions/client/components/management/details/rules/manager/rule/ruleDetails.fxml";
 
     public final static String RULES_DETAILS_CSS_LOCATION = "/predictions/client/components/management/details/rules/manager/rule/rule.css";

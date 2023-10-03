@@ -10,48 +10,43 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="predictions.client.components.main.ClientMainController">
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="predictions.client.components.main.ClientMainController">
    <content>
-      <BorderPane id="mainClientBorderPane" fx:id="mainClientBorderPane" prefHeight="600.0" prefWidth="800.0">
+      <BorderPane id="mainClientBorderPane" fx:id="mainClientBorderPane">
          <top>
-            <GridPane maxHeight="100.0" maxWidth="800.0" minHeight="150.0" minWidth="800.0" prefHeight="100.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+            <GridPane BorderPane.alignment="TOP_CENTER">
               <columnConstraints>
                   <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="25.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="25.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="25.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="25.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="25.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" prefWidth="50.0" />
+                  <ColumnConstraints hgrow="NEVER" maxWidth="200.0" minWidth="150.0" prefWidth="200.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="150.0" prefWidth="200.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="150.0" prefWidth="200.0" />
+                <ColumnConstraints hgrow="NEVER" minWidth="150.0" prefWidth="200.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" prefWidth="50.0" />
                 <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label id="predictionsLabel" text="Predictions - Client" GridPane.columnIndex="4" GridPane.columnSpan="3" GridPane.halignment="CENTER">
+                  <Label id="predictionsLabel" text="Predictions - Client" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.halignment="CENTER">
                      <font>
                         <Font name="System Bold" size="22.0" />
                      </font>
                      <padding>
-                        <Insets top="30.0" />
+                        <Insets top="20.0" />
                      </padding>
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </Label>
-                  <Button fx:id="requestsButton" mnemonicParsing="false" onAction="#viewRequests" prefHeight="40.0" prefWidth="140.0" text="Requests" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                  <Button fx:id="executionsButton" mnemonicParsing="false" onAction="#viewExecutions" prefHeight="40.0" prefWidth="140.0" text="Executions" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                  <Button fx:id="resultsButtton" mnemonicParsing="false" onAction="#viewResults" prefHeight="40.0" prefWidth="140.0" text="Results" GridPane.columnIndex="8" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                  <Button fx:id="simulationsDetailsButton" mnemonicParsing="false" onAction="#viewSimulationsDetails" prefHeight="40.0" prefWidth="140.0" text="Simulations Details" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                  <Label text="Name:" textFill="#4548f4" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Button fx:id="requestsButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#viewRequests" prefHeight="40.0" prefWidth="140.0" text="Requests" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <Button fx:id="executionsButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#viewExecutions" prefHeight="40.0" prefWidth="140.0" text="Executions" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <Button fx:id="resultsButtton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#viewResults" prefHeight="40.0" prefWidth="140.0" text="Results" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <Button fx:id="simulationsDetailsButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#viewSimulationsDetails" prefHeight="40.0" prefWidth="140.0" text="Simulations Details" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <Label id="usernameLabel" text="Name:" textFill="#4548f4" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                      <font>
                         <Font size="16.0" />
                      </font>

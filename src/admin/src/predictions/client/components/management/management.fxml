@@ -117,13 +117,12 @@
             </AnchorPane>
          </center>
          <right>
-            <GridPane minHeight="-Infinity" prefWidth="350.0" BorderPane.alignment="CENTER">
+            <GridPane maxHeight="330.0" maxWidth="400.0" minHeight="330.0" minWidth="400.0" prefHeight="330.0" prefWidth="400.0" BorderPane.alignment="TOP_CENTER">
               <columnConstraints>
                   <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="120.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" />
-                <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="150.0" prefWidth="150.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="166.0" minWidth="150.0" prefWidth="150.0" />
+                  <ColumnConstraints hgrow="NEVER" maxWidth="80.0" minWidth="50.0" prefWidth="80.0" />
               </columnConstraints>
               <rowConstraints>
                   <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" vgrow="SOMETIMES" />
@@ -131,48 +130,61 @@
                   <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="55.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" vgrow="NEVER" />
               </rowConstraints>
                <children>
-                  <Label id="threadsNumber" fx:id="threadCountLabel" text="0" GridPane.columnIndex="3" GridPane.halignment="RIGHT" />
-                  <Label id="threadsNumber" fx:id="currentlyRunningCounter" text="0" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                  <Label id="threadsNumber" fx:id="inQueueCounter" text="0" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                  <Label id="threadsNumber" fx:id="finishedCounter" text="0" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                  <Label id="threadsLabel" text="Threadpool count:" GridPane.columnIndex="1" GridPane.columnSpan="2">
+                  <Label id="threadsNumber" fx:id="threadCountLabel" styleClass="threadsNumber" text="1" GridPane.columnIndex="3" GridPane.halignment="LEFT">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding></Label>
+                  <Label id="threadsNumber" fx:id="currentlyRunningCounter" styleClass="threadsNumber" text="0" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding></Label>
+                  <Label id="threadsNumber" fx:id="inQueueCounter" styleClass="threadsNumber" text="0" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding></Label>
+                  <Label fx:id="finishedCounter" styleClass="threadsNumber" text="0" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding></Label>
+                  <Label styleClass="threadsLabel" text="Threadpool count:" GridPane.columnIndex="1" GridPane.columnSpan="2">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                      <font>
-                        <Font name="System Bold Italic" size="14.0" />
+                        <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label id="threadsLabel" text="Simulations currently running: " GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                  <Label styleClass="threadsLabel" text="Simulations currently running: " GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                      <font>
-                        <Font name="System Bold Italic" size="14.0" />
+                        <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label id="threadsLabel" text="Simulations in queue: " GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                  <Label styleClass="threadsLabel" text="Simulations in queue: " GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                      <font>
-                        <Font name="System Bold Italic" size="14.0" />
+                        <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label id="threadsLabel" text="Simulation finished: " GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                  <Label styleClass="threadsLabel" text="Simulation finished: " GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                      <font>
-                        <Font name="System Bold Italic" size="14.0" />
+                        <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="threadCountInput" promptText="set thread count (whole number)" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                  <TextField fx:id="threadCountInput" promptText="set thread count (whole number)" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets right="25.0" />
+                     </GridPane.margin></TextField>
                   <Button fx:id="threadsCountButton" mnemonicParsing="false" onAction="#setThreadsCount" prefHeight="40.0" prefWidth="140.0" text="Set threads count" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
                </children>
             </GridPane>

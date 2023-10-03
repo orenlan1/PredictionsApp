@@ -1,6 +1,11 @@
-#threadsNumber{
+.threadsNumber{
     -fx-font-weight: bold;
     -fx-text-fill: #F79D9D;
+}
+
+.threadsLabel {
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
 }
 
 #clearButton {

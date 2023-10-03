@@ -19,7 +19,6 @@ public class AdminClient extends Application {
     public void start(Stage primaryStage) throws Exception {
         URL mainFXML = getClass().getResource(MAIN_FXML_LOCATION);
 
-
         FXMLLoader mainLoader = new FXMLLoader(mainFXML);
         try {
             ScrollPane mainScrollPane = mainLoader.load();
@@ -27,7 +26,6 @@ public class AdminClient extends Application {
             AdminMainController adminMainController = mainLoader.getController();
 
             adminMainController.setPrimaryStage(primaryStage);
-
 
             Scene scene = new Scene(mainScrollPane,1400,800);
             String mainCss = this.getClass().getResource(MAIN_CSS_LOCATION).toExternalForm();
@@ -39,7 +37,5 @@ public class AdminClient extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 }
