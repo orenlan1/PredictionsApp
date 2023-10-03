@@ -1,0 +1,28 @@
+
+#predictionsLabel {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-family: Impact;
+    -fx-effect: dropshadow(three-pass-box, black, 1, 1, 0, 0);
+}
+
+#mainClientBorderPane {
+    -fx-background-color: linear-gradient(to bottom right, #9DD7F7, #C7E2F0);
+}
+
+.button {
+    -fx-background-color: white;
+    -fx-background-radius: 15px;
+    -fx-border-style: none;
+    -fx-font-family: Verdana;
+    -fx-font-size: 12px;
+}
+
+.button:hover {
+    -fx-effect: dropshadow(gaussian , rgba(0,0,0,0.7) , 3,0,0,1);
+}
+
+.button:pressed {
+    -fx-effect: innershadow(gaussian , rgba(0,0,0,0.7) , 3,0,0,0);
+}

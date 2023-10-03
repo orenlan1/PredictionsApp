@@ -143,34 +143,12 @@ public class ManagementController implements Initializable {
             TableRow<String> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 1 && !row.isEmpty()) {
+                    detailsBorderPane.setCenter(detailsScrollPane);
+                    detailsFlowPane.getChildren().clear();
                     String rowData = row.getItem();
                     loadedFilePathProperty.set(simNameToFilePath.get(rowData));
+                    sendRequestForSimulationInfo(rowData);
 
-                    HttpUrl.Builder urlBuilder = HttpUrl.parse(PREFIX_BASE_URL + "/details").newBuilder();
-                    urlBuilder.addQueryParameter("name", rowData);
-                    String finalUrl = urlBuilder.build().toString();
-                    HttpAdminClientUtil.runAsync(finalUrl, new Callback() {
-                        @Override
-                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                            Platform.runLater(() -> {
-                                Alert alert = new Alert(Alert.AlertType.ERROR, "HTTP error: " + e.getMessage());
-                                alert.setHeaderText(null);
-                                alert.show();
-                            });
-                        }
-
-                        @Override
-                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                            Platform.runLater(() -> {
-                                try {
-                                    simulationDetails = GSON_INSTANCE.fromJson(response.body().string(), SimulationInfoDTO.class);
-                                    int a = 1;
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            });
-                        }
-                    });
                 }
             });
             return row;
@@ -180,7 +158,8 @@ public class ManagementController implements Initializable {
 
     @FXML
     void clearDetails(ActionEvent event) {
-        
+        detailsBorderPane.setCenter(detailsScrollPane);
+        detailsFlowPane.getChildren().clear();
     }
 
     @FXML
@@ -218,6 +197,7 @@ public class ManagementController implements Initializable {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "File loaded successfully.");
                 alert.setHeaderText(null);
                 alert.show();
+                sendRequestForSimulationInfo(fileReaderDTO.getSimulationName());
             } else {
                 String error = fileReaderDTO.getError();
                 Alert alert = new Alert(Alert.AlertType.ERROR, error);
@@ -354,6 +334,32 @@ public class ManagementController implements Initializable {
 
     public BorderPane getManagementBorderPane() {
         return managementBorderPane;
+    }
+
+    void sendRequestForSimulationInfo(String simulationName) {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(PREFIX_BASE_URL + "/details").newBuilder();
+        urlBuilder.addQueryParameter("name", simulationName);
+        String finalUrl = urlBuilder.build().toString();
+        HttpAdminClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "HTTP error: " + e.getMessage());
+                    alert.setHeaderText(null);
+                    alert.show();
+                });
+            }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                Platform.runLater(() -> {
+                    try {
+                        simulationDetails = GSON_INSTANCE.fromJson(response.body().string(), SimulationInfoDTO.class);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            }
+        });
     }
 
 }
