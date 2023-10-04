@@ -1,8 +1,6 @@
 package predictions.client.components.details;
 
-import com.google.gson.JsonObject;
 import dto.EntityDTO;
-import dto.FileReaderDTO;
 import dto.PropertyDTO;
 import dto.SimulationInfoDTO;
 import javafx.application.Platform;
@@ -18,7 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +26,6 @@ import predictions.client.components.details.rules.manager.RulesManagerControlle
 import predictions.client.components.main.ClientMainController;
 import predictions.client.util.http.HttpClientUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -77,14 +73,14 @@ public class ClientDetailsController implements Initializable {
 
     private ClientMainController clientMainController;
     private Stage primaryStage;
-    private final SimpleBooleanProperty isFileLoaded;
+    private final SimpleBooleanProperty isSimulationSelected;
     private SimulationInfoDTO simulationDetails;
     private TimerTask listRefresher;
     private Timer timer;
 
 
     public ClientDetailsController() {
-        isFileLoaded = new SimpleBooleanProperty(false);
+        isSimulationSelected = new SimpleBooleanProperty(false);
     }
 
     @Override
@@ -93,10 +89,10 @@ public class ClientDetailsController implements Initializable {
         simulationsTable.setPlaceholder(empty);
         simulationsNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
         simulationsTable.setItems(tableData);
-        envVariablesButton.disableProperty().bind(isFileLoaded.not());
-        entitiesButton.disableProperty().bind(isFileLoaded.not());
-        rulesButton.disableProperty().bind(isFileLoaded.not());
-        gridButton.disableProperty().bind(isFileLoaded.not());
+        envVariablesButton.disableProperty().bind(isSimulationSelected.not());
+        entitiesButton.disableProperty().bind(isSimulationSelected.not());
+        rulesButton.disableProperty().bind(isSimulationSelected.not());
+        gridButton.disableProperty().bind(isSimulationSelected.not());
 
         simulationsTable.setRowFactory(tv -> {
             TableRow<String> row = new TableRow<>();
@@ -106,6 +102,7 @@ public class ClientDetailsController implements Initializable {
                     detailsFlowPane.getChildren().clear();
                     String rowData = row.getItem();
                     sendRequestForSimulationInfo(rowData);
+                    isSimulationSelected.set(true);
                 }
             });
             return row;
@@ -122,25 +119,24 @@ public class ClientDetailsController implements Initializable {
 
     @FXML
     void clearDetails(ActionEvent event) {
-        detailsBorderPane.setCenter(detailsScrollPane);
         detailsFlowPane.getChildren().clear();
+        detailsBorderPane.setCenter(detailsScrollPane);
     }
 
 
     @FXML
     void showEntities(ActionEvent event) throws Exception {
-        detailsFlowPane.getChildren().clear();
-        detailsBorderPane.setCenter(detailsScrollPane);
+        clearDetails(event);
 
         for (EntityDTO dto: simulationDetails.getEntitiesList()) {
-            URL entityDetailsFXML = getClass().getResource("/predictions/client/components/management/details/entity/entityDetails.fxml");
+            URL entityDetailsFXML = getClass().getResource("/predictions/client/components/details/entity/entityDetails.fxml");
             FXMLLoader loader = new FXMLLoader(entityDetailsFXML);
             GridPane entityCard = loader.load();
 
             EntityCardController entityCardController = loader.getController();
             entityCardController.setName(dto.getEntityName());
             entityCardController.setProperties(dto.getPropertiesList());
-            entityCard.getStylesheets().add("/predictions/client//components/management/details/entity/entity.css");
+            entityCard.getStylesheets().add("/predictions/client//components/details/entity/entity.css");
 
             detailsFlowPane.getChildren().add(entityCard);
         }
@@ -148,17 +144,16 @@ public class ClientDetailsController implements Initializable {
 
     @FXML
     void showEnvVariables(ActionEvent event) throws Exception {
-        detailsFlowPane.getChildren().clear();
-        detailsBorderPane.setCenter(detailsScrollPane);
+        clearDetails(event);
 
         for (PropertyDTO dto : simulationDetails.getEnvVariablesList()) {
-            URL envVariableDetailsFXML = getClass().getResource("/predictions/client/components/management/details/environment/variable/environmentVariableDetails.fxml");
+            URL envVariableDetailsFXML = getClass().getResource("/predictions/client/components/details/environment/variable/environmentVariableDetails.fxml");
             FXMLLoader loader = new FXMLLoader(envVariableDetailsFXML);
             GridPane envVariableCard = loader.load();
 
             EnvVariableCardController envVariableCardController = loader.getController();
             envVariableCardController.setEnvVariableCard(dto);
-            envVariableCard.getStylesheets().add("/predictions/client/components/management/details/environment/variable/envVariables.css");
+            envVariableCard.getStylesheets().add("/predictions/client/components/details/environment/variable/envVariables.css");
 
             detailsFlowPane.getChildren().add(envVariableCard);
         }
@@ -166,25 +161,24 @@ public class ClientDetailsController implements Initializable {
 
     @FXML
     void showGrid(ActionEvent event) throws Exception{
-        detailsFlowPane.getChildren().clear();
-        detailsBorderPane.setCenter(detailsScrollPane);
-        URL gridDetailsFXML = getClass().getResource("/predictions/client/components/management/details/grid/gridDetails.fxml");
+        clearDetails(event);
+
+        URL gridDetailsFXML = getClass().getResource("/predictions/client/components/details/grid/gridDetails.fxml");
         FXMLLoader loader = new FXMLLoader(gridDetailsFXML);
         GridPane gridCard = loader.load();
 
         GridCardController gridCardController = loader.getController();
         gridCardController.setAxisLabels(simulationDetails.getGrid().getX(), simulationDetails.getGrid().getY());
-        gridCard.getStylesheets().add("/predictions/client/components/management/details/grid/grid.css");
+        gridCard.getStylesheets().add("/predictions/client/components/details/grid/grid.css");
 
         detailsFlowPane.getChildren().add(gridCard);
-
     }
 
     @FXML
     void showRules(ActionEvent event) throws Exception {
-        detailsFlowPane.getChildren().clear();
+        clearDetails(event);
 
-        URL rulesManagerDetailsFXML = getClass().getResource("/predictions/client/components/management/details/rules/manager/rulesManager.fxml");
+        URL rulesManagerDetailsFXML = getClass().getResource("/predictions/client/components/details/rules/manager/rulesManager.fxml");
         FXMLLoader loader = new FXMLLoader(rulesManagerDetailsFXML);
         BorderPane rulesManager = loader.load();
 

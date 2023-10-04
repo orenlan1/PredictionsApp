@@ -4,7 +4,6 @@ import dto.RuleDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.*;
-import predictions.client.components.details.rules.manager.action.CardController;
 import predictions.client.components.details.rules.manager.rule.RuleCardController;
 
 import java.net.URL;
@@ -12,6 +11,7 @@ import java.util.List;
 
 import static predictions.client.util.Constants.RULES_DETAILS_CSS_LOCATION;
 import static predictions.client.util.Constants.RULES_DETAILS_FXML_LOCATION;
+
 public class RulesManagerController {
 
     @FXML
@@ -41,6 +41,7 @@ public class RulesManagerController {
             ruleCardController.setRulesManagerController(this);
             ruleCardController.setRuleCard(dto);
             ruleCard.getStylesheets().add(RULES_DETAILS_CSS_LOCATION);
+
 
             rulesContainer.getChildren().add(ruleCard);
         }

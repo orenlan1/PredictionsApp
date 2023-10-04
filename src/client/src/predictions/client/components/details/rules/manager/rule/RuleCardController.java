@@ -83,7 +83,7 @@ public class RuleCardController {
     }
 
     public void showAction(ActionDTO dto) throws Exception {
-        URL actionDetailsFXML = getClass().getResource("predicitons/client/components/management/details/rules/manager/action/increase/increaseAndDecreaseActionDetails.fxml");
+        URL actionDetailsFXML = getClass().getResource("/predictions/client/components/details/rules/manager/action/increase/increaseAndDecreaseActionDetails.fxml");
         FXMLLoader loader;
         GridPane actionCard;
         CardController controller;
@@ -92,29 +92,29 @@ public class RuleCardController {
         switch (type) {
             case "INCREASE":
             case "DECREASE":
-                actionDetailsFXML = getClass().getResource("/predictions/client/components/management/details/rules/manager/action/increase/increaseAndDecreaseActionDetails.fxml");
+                actionDetailsFXML = getClass().getResource("/predictions/client/components/details/rules/manager/action/increase/increaseAndDecreaseActionDetails.fxml");
                 break;
             case "MULTIPLICATION":
             case "DIVISION":
-                actionDetailsFXML = getClass().getResource("/predictions/client/components/management/details/rules/manager/action/calculation/calculationActionDetails.fxml");
+                actionDetailsFXML = getClass().getResource("/predictions/client/components/details/rules/manager/action/calculation/calculationActionDetails.fxml");
                 break;
             case "CONDITION":
                 if (dto.getConditionActionDTO().isSingular())
-                    actionDetailsFXML = getClass().getResource("/predictions/client/components/management/details/rules/manager/action/condition/singular/singleConditionActionDetails.fxml");
+                    actionDetailsFXML = getClass().getResource("/predictions/client/components/details/rules/manager/action/condition/singular/singleConditionActionDetails.fxml");
                 else
-                    actionDetailsFXML = getClass().getResource("/predictions/client/components/management/details/rules/manager/action/condition/multiple/multipleConditionActionDetails.fxml");
+                    actionDetailsFXML = getClass().getResource("/predictions/client/components/details/rules/manager/action/condition/multiple/multipleConditionActionDetails.fxml");
                 break;
             case "SET":
-                actionDetailsFXML = getClass().getResource("/predictions/client/components/management/details/rules/manager/action/set/setActionDetails.fxml");
+                actionDetailsFXML = getClass().getResource("/predictions/client/components/details/rules/manager/action/set/setActionDetails.fxml");
                 break;
             case "KILL":
-                actionDetailsFXML = getClass().getResource("/predictions/client/components/management/details/rules/manager/action/kill/killActionDetails.fxml");
+                actionDetailsFXML = getClass().getResource("/predictions/client/components/details/rules/manager/action/kill/killActionDetails.fxml");
                 break;
             case "PROXIMITY":
-                actionDetailsFXML = getClass().getResource("/predictions/client/components/management/details/rules/manager/action/proximity/proximityActionDetails.fxml");
+                actionDetailsFXML = getClass().getResource("/predictions/client/components/details/rules/manager/action/proximity/proximityActionDetails.fxml");
                 break;
             case "REPLACE":
-                actionDetailsFXML = getClass().getResource(("/predictions/client/components/management/details/rules/manager/action/replace/replaceActionDetails.fxml"));
+                actionDetailsFXML = getClass().getResource(("/predictions/client/components/details/rules/manager/action/replace/replaceActionDetails.fxml"));
                 break;
         }
 
@@ -122,7 +122,7 @@ public class RuleCardController {
         actionCard = loader.load();
         controller = loader.getController();
         controller.setCard(dto);
-        actionCard.getStylesheets().add("/predictions/client/components/management/details/rules/manager/action/action.css");
+        actionCard.getStylesheets().add("/predictions/client/components/details/rules/manager/action/action.css");
 
         rulesManagerController.showActionCard(actionCard);
     }

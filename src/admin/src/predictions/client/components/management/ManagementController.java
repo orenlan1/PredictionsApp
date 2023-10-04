@@ -157,8 +157,8 @@ public class ManagementController implements Initializable {
 
     @FXML
     void clearDetails(ActionEvent event) {
-        detailsBorderPane.setCenter(detailsScrollPane);
         detailsFlowPane.getChildren().clear();
+        detailsBorderPane.setCenter(detailsScrollPane);
     }
 
     @FXML
@@ -233,8 +233,7 @@ public class ManagementController implements Initializable {
 
     @FXML
     void showEntities(ActionEvent event) throws Exception {
-        detailsFlowPane.getChildren().clear();
-        detailsBorderPane.setCenter(detailsScrollPane);
+        clearDetails(event);
 
         for (EntityDTO dto: simulationDetails.getEntitiesList()) {
             URL entityDetailsFXML = getClass().getResource("/predictions/client/components/management/details/entity/entityDetails.fxml");
@@ -252,8 +251,7 @@ public class ManagementController implements Initializable {
 
     @FXML
     void showEnvVariables(ActionEvent event) throws Exception {
-        detailsFlowPane.getChildren().clear();
-        detailsBorderPane.setCenter(detailsScrollPane);
+        clearDetails(event);
 
         for (PropertyDTO dto : simulationDetails.getEnvVariablesList()) {
             URL envVariableDetailsFXML = getClass().getResource("/predictions/client/components/management/details/environment/variable/environmentVariableDetails.fxml");
@@ -270,8 +268,8 @@ public class ManagementController implements Initializable {
 
     @FXML
     void showGrid(ActionEvent event) throws Exception{
-        detailsFlowPane.getChildren().clear();
-        detailsBorderPane.setCenter(detailsScrollPane);
+        clearDetails(event);
+
         URL gridDetailsFXML = getClass().getResource("/predictions/client/components/management/details/grid/gridDetails.fxml");
         FXMLLoader loader = new FXMLLoader(gridDetailsFXML);
         GridPane gridCard = loader.load();
@@ -286,7 +284,7 @@ public class ManagementController implements Initializable {
 
     @FXML
     void showRules(ActionEvent event) throws Exception {
-        detailsFlowPane.getChildren().clear();
+        clearDetails(event);
 
         URL rulesManagerDetailsFXML = getClass().getResource("/predictions/client/components/management/details/rules/manager/rulesManager.fxml");
         FXMLLoader loader = new FXMLLoader(rulesManagerDetailsFXML);
