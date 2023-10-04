@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="loginAnchorPane" prefHeight="800.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="predictions.client.components.login.LoginController">
+   <children>
+      <ImageView fitHeight="800.0" fitWidth="1400.0" layoutX="197.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@MapleStoryLogin_cleanup.jpeg" />
+         </image>
+      </ImageView>
+      <Label layoutX="700.0" layoutY="349.0" prefHeight="38.0" prefWidth="128.0" text="USER NAME:" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="clientNameField" layoutX="802.0" layoutY="350.0" prefHeight="35.0" prefWidth="110.0">
+         <font>
+            <Font name="Arial" size="16.0" />
+         </font>
+      </TextField>
+      <Button fx:id="quitButton" layoutX="921.0" layoutY="470.0" mnemonicParsing="false" onAction="#quitClicked" prefHeight="25.0" prefWidth="60.0" text="Quit" />
+      <Button fx:id="loginButton" layoutX="921.0" layoutY="343.0" mnemonicParsing="false" onAction="#loginClicked" prefHeight="50.0" prefWidth="60.0" text="Login" />
+      <Label fx:id="errorMessageLabel" layoutX="719.0" layoutY="469.0" prefHeight="26.0" prefWidth="166.0" />
+   </children>
+</AnchorPane>

@@ -29,7 +29,7 @@ public class ClientApp extends Application {
             String mainCss = this.getClass().getResource(MAIN_CSS_LOCATION).toExternalForm();
             scene.getStylesheets().add(mainCss);
 
-            primaryStage.setTitle("Predictions - administrator");
+            primaryStage.setTitle("Predictions - client");
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {
