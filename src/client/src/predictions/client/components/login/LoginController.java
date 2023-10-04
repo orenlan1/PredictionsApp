@@ -6,11 +6,13 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -32,37 +34,26 @@ public class LoginController {
 
     @FXML
     private Button quitButton;
-    @FXML
-    private Label errorMessageLabel;
 
     @FXML
-    private AnchorPane loginAnchorPane;
+    private GridPane loginPage;
 
     private ClientMainController clientMainController;
-
-    private final StringProperty errorMessageProperty = new SimpleStringProperty();
-
-
-
-    @FXML
-    public void initialize() {
-        errorMessageLabel.textProperty().bind(errorMessageProperty);
-    }
 
 
     public void setClientMainController(ClientMainController clientMainController) {
         this.clientMainController = clientMainController;
     }
 
-    public AnchorPane getLoginAnchorPane() {
-        return loginAnchorPane;
+    public GridPane getLoginPage() {
+        return loginPage;
     }
 
     @FXML
     void loginClicked(ActionEvent event) {
         String userName = clientNameField.getText();
         if (userName.isEmpty()) {
-            errorMessageProperty.set("User name is empty. You can't login with empty user name");
+            showAlert("User name is empty. You can't login with empty user name");
             return;
         }
 
@@ -78,7 +69,7 @@ public class LoginController {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() ->
-                        errorMessageProperty.set("Something went wrong: " + e.getMessage())
+                        showAlert("Something went wrong: " + e.getMessage())
                 );
             }
 
@@ -87,12 +78,13 @@ public class LoginController {
                 if (response.code() != 200) {
                     String responseBody = response.body().string();
                     Platform.runLater(() ->
-                            errorMessageProperty.set("Something went wrong: " + responseBody)
+                            showAlert("Something went wrong: " + responseBody)
                     );
                 } else {
                     Platform.runLater(() -> {
                         clientMainController.clearMainPanel();
-
+                        clientMainController.setNameLabel(userName);
+                        clientMainController.setDisableButtons(false);
                     });
                 }
             }
@@ -103,6 +95,12 @@ public class LoginController {
     @FXML
     void quitClicked(ActionEvent event) {
         Platform.exit();
+    }
+
+    public void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, message);
+        alert.setHeaderText(null);
+        alert.show();
     }
 
 }

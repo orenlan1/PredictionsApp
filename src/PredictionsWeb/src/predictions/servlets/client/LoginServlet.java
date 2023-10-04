@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
                 //normalize the username value
                 usernameFromParameter = usernameFromParameter.trim();
 
-                if ( userManager.addUser(usernameFromParameter)) {  // username is not exist
+                if (userManager.addUser(usernameFromParameter)) {  // username is not exist
                     request.getSession(true).setAttribute("username", usernameFromParameter);
                     response.setStatus(HttpServletResponse.SC_OK);
                 }
@@ -42,7 +42,6 @@ public class LoginServlet extends HttpServlet {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     response.getOutputStream().print(errorMessage);
                 }
-
             }
         } else {
             //user is already logged in

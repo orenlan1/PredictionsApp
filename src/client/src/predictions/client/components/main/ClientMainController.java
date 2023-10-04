@@ -1,69 +1,94 @@
 package predictions.client.components.main;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import predictions.client.components.details.ClientDetailsController;
 import predictions.client.components.login.LoginController;
 
 import java.io.IOException;
 import java.net.URL;
 
-import static predictions.client.util.Constants.LOGIN_PAGE_FXML_LOCATION;
+import static predictions.client.util.Constants.*;
 
 public class ClientMainController {
-
-    @FXML
-    private Button executionsButton;
 
     @FXML
     private BorderPane mainClientBorderPane;
 
     @FXML
+    private Button executionsButton;
+
+    @FXML
     private Button requestsButton;
 
     @FXML
-    private Button resultsButtton;
+    private Button resultsButton;
 
     @FXML
     private Button simulationsDetailsButton;
 
+    @FXML
+    private Label nameLabel;
+
     private Stage primaryStage;
-
     private LoginController loginController;
+    private ClientDetailsController clientDetailsController;
+    private final BooleanProperty disableButtons;
 
-    private final StringProperty errorMessageProperty = new SimpleStringProperty();
-
-
+    public ClientMainController() {
+        disableButtons = new SimpleBooleanProperty(true);
+    }
 
     @FXML
     public void initialize() {
         loadLoginPage();
+        loadDetailsPage();
+        executionsButton.disableProperty().bind(disableButtons);
+        resultsButton.disableProperty().bind(disableButtons);
+        requestsButton.disableProperty().bind(disableButtons);
+        simulationsDetailsButton.disableProperty().bind(disableButtons);
     }
-
-
 
 
     private void loadLoginPage() {
         URL loginPageUrl = getClass().getResource(LOGIN_PAGE_FXML_LOCATION);
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(loginPageUrl);
-            fxmlLoader.setLocation(loginPageUrl);
-            AnchorPane loginPane = fxmlLoader.load();
+            GridPane loginPane = fxmlLoader.load();
             loginController = fxmlLoader.getController();
             loginController.setClientMainController(this);
             setMainPanelTo(loginPane);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void loadDetailsPage() {
+        URL detailsFXML = getClass().getResource(DETAILS_FXML_LOCATION);
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(detailsFXML);
+            BorderPane managementPane = fxmlLoader.load();
+            clientDetailsController = fxmlLoader.getController();
+            clientDetailsController.setClientMainController(this);
+            String detailsCss = this.getClass().getResource(DETAILS_CSS_LOCATION).toExternalForm();
+            managementPane.getStylesheets().add(detailsCss);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setNameLabel(String name) {
+        nameLabel.setText("Username: " + name);
     }
 
     public void clearMainPanel() {
@@ -76,26 +101,30 @@ public class ClientMainController {
 
     @FXML
     void viewExecutions(ActionEvent event) {
-
+        clientDetailsController.closeListRefresher();
     }
 
     @FXML
     void viewRequests(ActionEvent event) {
-
+        clientDetailsController.closeListRefresher();
     }
 
     @FXML
     void viewResults(ActionEvent event) {
-
+        clientDetailsController.closeListRefresher();
     }
 
     @FXML
     void viewSimulationsDetails(ActionEvent event) {
-
+        clearMainPanel();
+        clientDetailsController.startListRefresher();
+        setMainPanelTo(clientDetailsController.getDetailsBorderPane());
     }
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
+
+    public void setDisableButtons(boolean disable) { disableButtons.set(disable); }
 
 }

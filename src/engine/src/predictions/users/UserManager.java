@@ -12,7 +12,7 @@ public class UserManager {
     }
 
     public synchronized boolean addUser(String username) {
-        if ( !usersSet.contains(username)) {
+        if (!usersSet.contains(username)) {
             usersSet.add(username);
             return true;
         }

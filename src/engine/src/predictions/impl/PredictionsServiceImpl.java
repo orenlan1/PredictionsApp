@@ -258,4 +258,6 @@ public class PredictionsServiceImpl implements PredictionsService {
         simulationManager.getSpecificWorld(name, id).stopSimulation();
     }
 
+    @Override
+    public Collection<String> getAllSimulationsNames() { return simulationManager.getAllSimulationNames(); }
 }

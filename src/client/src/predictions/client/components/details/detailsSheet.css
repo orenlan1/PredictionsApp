@@ -1,0 +1,7 @@
+.scroll-pane {
+    -fx-background: none;
+}
+
+#clearButton {
+    -fx-font-weight: bold;
+}

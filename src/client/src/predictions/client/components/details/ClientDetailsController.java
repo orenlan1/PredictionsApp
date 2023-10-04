@@ -1,11 +1,11 @@
-package predictions.client.components.management;
+package predictions.client.components.details;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import dto.*;
+import dto.EntityDTO;
+import dto.FileReaderDTO;
+import dto.PropertyDTO;
+import dto.SimulationInfoDTO;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -22,34 +22,29 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
-import predictions.client.components.main.AdminMainController;
+import predictions.client.components.details.entity.EntityCardController;
+import predictions.client.components.details.environment.variable.EnvVariableCardController;
+import predictions.client.components.details.grid.GridCardController;
+import predictions.client.components.details.rules.manager.RulesManagerController;
+import predictions.client.components.main.ClientMainController;
+import predictions.client.util.http.HttpClientUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import predictions.client.components.management.details.entity.EntityCardController;
-import predictions.client.components.management.details.environment.variable.EnvVariableCardController;
-import predictions.client.components.management.details.grid.GridCardController;
-import predictions.client.components.management.details.rules.manager.RulesManagerController;
-import predictions.client.util.http.HttpAdminClientUtil;
-import static predictions.client.util.Constants.*;
+import static predictions.client.util.Constants.GSON_INSTANCE;
+import static predictions.client.util.Constants.PREFIX_BASE_URL;
 
 
-public class ManagementController implements Initializable {
-
-
-    @FXML
-    private BorderPane managementBorderPane;
+public class ClientDetailsController implements Initializable {
 
     @FXML
     private Button clearButton;
-
-    @FXML
-    private BorderPane detailsBorderPane;
 
     @FXML
     private FlowPane detailsFlowPane;
@@ -64,13 +59,10 @@ public class ManagementController implements Initializable {
     private Button envVariablesButton;
 
     @FXML
-    private Label filePathLabel;
-
-    @FXML
     private Button gridButton;
 
     @FXML
-    private Button loadFileButton;
+    private BorderPane detailsBorderPane;
 
     @FXML
     private Button rulesButton;
@@ -81,37 +73,17 @@ public class ManagementController implements Initializable {
     @FXML
     private TableView<String> simulationsTable;
 
-    @FXML
-    private Label threadCountLabel;
-
-    @FXML
-    private Label currentlyRunningCounter;
-
-    @FXML
-    private Label inQueueCounter;
-
-    @FXML
-    private Label finishedCounter;
-
-    @FXML
-    private Button threadsCountButton;
-
-    @FXML
-    private TextField threadCountInput;
-
     private ObservableList<String> tableData = FXCollections.observableArrayList();
 
-    private Map<String,String> simNameToFilePath = new HashMap<>();
-
-    private AdminMainController adminMainController;
+    private ClientMainController clientMainController;
     private Stage primaryStage;
-    private final SimpleStringProperty loadedFilePathProperty;
     private final SimpleBooleanProperty isFileLoaded;
     private SimulationInfoDTO simulationDetails;
+    private TimerTask listRefresher;
+    private Timer timer;
 
 
-    public ManagementController() {
-        loadedFilePathProperty = new SimpleStringProperty("");
+    public ClientDetailsController() {
         isFileLoaded = new SimpleBooleanProperty(false);
     }
 
@@ -125,18 +97,6 @@ public class ManagementController implements Initializable {
         entitiesButton.disableProperty().bind(isFileLoaded.not());
         rulesButton.disableProperty().bind(isFileLoaded.not());
         gridButton.disableProperty().bind(isFileLoaded.not());
-        filePathLabel.textProperty().bind(Bindings.concat("File path: ", loadedFilePathProperty));
-        threadsCountButton.disableProperty().bind(threadCountInput.textProperty().isEmpty());
-
-        threadCountInput.textProperty().addListener((obs, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                try {
-                    Integer.parseInt(newValue);
-                } catch (NumberFormatException e) {
-                    threadCountInput.setText(oldValue);
-                }
-            }
-        });
 
         simulationsTable.setRowFactory(tv -> {
             TableRow<String> row = new TableRow<>();
@@ -145,15 +105,20 @@ public class ManagementController implements Initializable {
                     detailsBorderPane.setCenter(detailsScrollPane);
                     detailsFlowPane.getChildren().clear();
                     String rowData = row.getItem();
-                    loadedFilePathProperty.set(simNameToFilePath.get(rowData));
                     sendRequestForSimulationInfo(rowData);
-
                 }
             });
             return row;
         });
     }
 
+    public void setClientMainController(ClientMainController clientMainController) {
+        this.clientMainController = clientMainController;
+    }
+
+    public BorderPane getDetailsBorderPane() {
+        return detailsBorderPane;
+    }
 
     @FXML
     void clearDetails(ActionEvent event) {
@@ -161,75 +126,6 @@ public class ManagementController implements Initializable {
         detailsFlowPane.getChildren().clear();
     }
 
-    @FXML
-    void loadNewFileAction(ActionEvent event) throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select xml simulation file");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("xml files","*.xml"));
-        File selectedFile = fileChooser.showOpenDialog(adminMainController.getPrimaryStage());
-        if (selectedFile == null) {
-            return;
-        }
-
-        RequestBody body = new MultipartBody.Builder()
-                .addFormDataPart("file", selectedFile.getAbsolutePath(), RequestBody.create(selectedFile,MediaType.parse("text/plain")))
-                .build();
-
-        String finalUrl = PREFIX_BASE_URL + "/loadFile";
-        Request request = new Request.Builder()
-                .url(finalUrl)
-                .post(body)
-                .build();
-
-        Call call = HttpAdminClientUtil.HTTP_CLIENT.newCall(request);
-        Response response = call.execute();
-        if (response.isSuccessful()) {
-            ResponseBody responseBody = response.body();
-            String rawBody = responseBody.string();
-            FileReaderDTO fileReaderDTO = GSON_INSTANCE.fromJson(rawBody, FileReaderDTO.class);
-            boolean isValid = fileReaderDTO.isValid();
-            if (isValid) {
-                simNameToFilePath.put(fileReaderDTO.getSimulationName(),selectedFile.getAbsolutePath());
-                isFileLoaded.set(true);
-                tableData.add(fileReaderDTO.getSimulationName());
-                loadedFilePathProperty.set(selectedFile.getAbsolutePath());
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "File loaded successfully.");
-                alert.setHeaderText(null);
-                alert.show();
-                sendRequestForSimulationInfo(fileReaderDTO.getSimulationName());
-            } else {
-                String error = fileReaderDTO.getError();
-                Alert alert = new Alert(Alert.AlertType.ERROR, error);
-                alert.setHeaderText(null);
-                alert.show();
-            }
-        }
-    }
-
-    @FXML
-    void setThreadsCount(ActionEvent event) throws IOException {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("threadCount", threadCountInput.getText());
-        String jsonObjectAsString = jsonObject.toString();
-        RequestBody body = RequestBody.create(MediaType.get("application/json; charset=utf-8"), jsonObjectAsString);
-
-        String finalUrl = PREFIX_BASE_URL + "/threadCount";
-        Request request = new Request.Builder()
-                .url(finalUrl)
-                .post(body)
-                .build();
-        Call call = HttpAdminClientUtil.HTTP_CLIENT.newCall(request);
-        Response response = call.execute();
-
-        Alert alert =  new Alert(Alert.AlertType.INFORMATION, "Thread count set successfully!");
-        if (response.isSuccessful())
-            threadCountLabel.setText(threadCountInput.getText());
-        else
-            alert =  new Alert(Alert.AlertType.ERROR, "Could not set thread count");
-
-        alert.setHeaderText(null);
-        alert.show();
-    }
 
     @FXML
     void showEntities(ActionEvent event) throws Exception {
@@ -297,27 +193,14 @@ public class ManagementController implements Initializable {
         detailsBorderPane.setCenter(rulesManager);
     }
 
-
-    public void setAdminMainController(AdminMainController adminMainController) {
-        this.adminMainController = adminMainController;
-    }
-
-    public BorderPane getManagementBorderPane() {
-        return managementBorderPane;
-    }
-
     void sendRequestForSimulationInfo(String simulationName) {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(PREFIX_BASE_URL + "/details").newBuilder();
         urlBuilder.addQueryParameter("name", simulationName);
         String finalUrl = urlBuilder.build().toString();
-        HttpAdminClientUtil.runAsync(finalUrl, new Callback() {
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Platform.runLater(() -> {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "HTTP error: " + e.getMessage());
-                    alert.setHeaderText(null);
-                    alert.show();
-                });
+                showAlert("HTTP error: " + e.getMessage());
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
@@ -330,6 +213,37 @@ public class ManagementController implements Initializable {
                 });
             }
         });
+    }
+
+    public void showAlert(String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR, message);
+            alert.setHeaderText(null);
+            alert.show();
+        });
+    }
+
+    public void updateSimulationList(List<String> simulationNames) {
+        Platform.runLater(() -> {
+            ObservableList<String> items = simulationsTable.getItems();
+            items.clear();
+            items.addAll(simulationNames);
+        });
+    }
+
+    public void startListRefresher() {
+        listRefresher = new SimulationListRefresher (
+                this::updateSimulationList,
+                this::showAlert);
+        timer = new Timer();
+        timer.schedule(listRefresher, 2000, 2000);
+    }
+
+    public void closeListRefresher() {
+        if (listRefresher != null && timer != null) {
+            listRefresher.cancel();
+            timer.cancel();
+        }
     }
 
 }

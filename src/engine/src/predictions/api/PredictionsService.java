@@ -6,6 +6,7 @@ import world.World;
 import world.exceptions.EntityPropertyNotExistException;
 
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ public interface PredictionsService {
     void pauseSimulation(String name, Integer id);
     void resumeSimulation(String name, Integer id);
     void stopSimulation(String name, Integer id);
+    Collection<String> getAllSimulationsNames();
 }
 
 
