@@ -104,7 +104,6 @@ public class ManagementController implements Initializable {
     private Map<String,String> simNameToFilePath = new HashMap<>();
 
     private AdminMainController adminMainController;
-    private Stage primaryStage;
     private final SimpleStringProperty loadedFilePathProperty;
     private final SimpleBooleanProperty isFileLoaded;
     private SimulationInfoDTO simulationDetails;

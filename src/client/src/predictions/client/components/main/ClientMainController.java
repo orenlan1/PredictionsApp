@@ -13,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import predictions.client.components.details.ClientDetailsController;
 import predictions.client.components.login.LoginController;
+import predictions.client.components.requests.RequestsScreenController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -42,6 +43,7 @@ public class ClientMainController {
     private Stage primaryStage;
     private LoginController loginController;
     private ClientDetailsController clientDetailsController;
+    private RequestsScreenController requestsScreenController;
     private final BooleanProperty disableButtons;
 
     public ClientMainController() {
@@ -52,6 +54,7 @@ public class ClientMainController {
     public void initialize() {
         loadLoginPage();
         loadDetailsPage();
+        loadRequestsPage();
         executionsButton.disableProperty().bind(disableButtons);
         resultsButton.disableProperty().bind(disableButtons);
         requestsButton.disableProperty().bind(disableButtons);
@@ -78,9 +81,22 @@ public class ClientMainController {
             FXMLLoader fxmlLoader = new FXMLLoader(detailsFXML);
             BorderPane managementPane = fxmlLoader.load();
             clientDetailsController = fxmlLoader.getController();
-            clientDetailsController.setClientMainController(this);
             String detailsCss = this.getClass().getResource(DETAILS_CSS_LOCATION).toExternalForm();
             managementPane.getStylesheets().add(detailsCss);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadRequestsPage() {
+        URL requestsFXML = getClass().getResource(REQUESTS_FXML_LOCATION);
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(requestsFXML);
+            BorderPane requestsPane = fxmlLoader.load();
+            requestsScreenController = fxmlLoader.getController();
+            String requestsCss = this.getClass().getResource(REQUESTS_CSS_LOCATION).toExternalForm();
+            requestsPane.getStylesheets().add(requestsCss);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -101,24 +117,32 @@ public class ClientMainController {
 
     @FXML
     void viewExecutions(ActionEvent event) {
-        clientDetailsController.closeListRefresher();
+        closeRefreshersAndClear();
     }
 
     @FXML
     void viewRequests(ActionEvent event) {
-        clientDetailsController.closeListRefresher();
+        closeRefreshersAndClear();
+        //TODO requestsScreen -> refresher
+        setMainPanelTo(requestsScreenController.getRequestScreen());
     }
 
     @FXML
     void viewResults(ActionEvent event) {
-        clientDetailsController.closeListRefresher();
+        closeRefreshersAndClear();
     }
 
     @FXML
     void viewSimulationsDetails(ActionEvent event) {
-        clearMainPanel();
+        closeRefreshersAndClear();
         clientDetailsController.startListRefresher();
         setMainPanelTo(clientDetailsController.getDetailsBorderPane());
+    }
+
+    public void closeRefreshersAndClear() {
+        clientDetailsController.closeListRefresher();
+
+        clearMainPanel();
     }
 
     public void setPrimaryStage(Stage primaryStage) {

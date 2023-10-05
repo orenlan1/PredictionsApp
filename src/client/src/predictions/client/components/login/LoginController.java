@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -45,6 +46,15 @@ public class LoginController {
         this.clientMainController = clientMainController;
     }
 
+    @FXML
+    public void initialize() {
+        clientNameField.setOnKeyPressed( event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                loginClicked(new ActionEvent());
+            }
+        });
+    }
+
     public GridPane getLoginPage() {
         return loginPage;
     }
@@ -75,7 +85,7 @@ public class LoginController {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (response.code() != 200) {
+                if (response.isSuccessful()) {
                     String responseBody = response.body().string();
                     Platform.runLater(() ->
                             showAlert("Something went wrong: " + responseBody)

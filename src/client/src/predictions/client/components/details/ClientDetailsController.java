@@ -16,14 +16,12 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import predictions.client.components.details.entity.EntityCardController;
 import predictions.client.components.details.environment.variable.EnvVariableCardController;
 import predictions.client.components.details.grid.GridCardController;
 import predictions.client.components.details.rules.manager.RulesManagerController;
-import predictions.client.components.main.ClientMainController;
 import predictions.client.util.http.HttpClientUtil;
 
 import java.io.IOException;
@@ -71,8 +69,6 @@ public class ClientDetailsController implements Initializable {
 
     private ObservableList<String> tableData = FXCollections.observableArrayList();
 
-    private ClientMainController clientMainController;
-    private Stage primaryStage;
     private final SimpleBooleanProperty isSimulationSelected;
     private SimulationInfoDTO simulationDetails;
     private TimerTask listRefresher;
@@ -107,10 +103,6 @@ public class ClientDetailsController implements Initializable {
             });
             return row;
         });
-    }
-
-    public void setClientMainController(ClientMainController clientMainController) {
-        this.clientMainController = clientMainController;
     }
 
     public BorderPane getDetailsBorderPane() {
