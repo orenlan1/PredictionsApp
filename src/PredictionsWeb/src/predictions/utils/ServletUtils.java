@@ -27,8 +27,10 @@ public class ServletUtils {
     }
 
     public static AllocationsManager getAllocationsManager(ServletContext servletContext) {
-        if (servletContext.getAttribute(ALLOCATIONS_MANAGER_ATTRIBUTE_NAME) == null ) {
-            servletContext.setAttribute(ALLOCATIONS_MANAGER_ATTRIBUTE_NAME, new AllocationsManager());
+        synchronized (allocationsManager) {
+            if (servletContext.getAttribute(ALLOCATIONS_MANAGER_ATTRIBUTE_NAME) == null) {
+                servletContext.setAttribute(ALLOCATIONS_MANAGER_ATTRIBUTE_NAME, new AllocationsManager());
+            }
         }
         return (AllocationsManager) servletContext.getAttribute(ALLOCATIONS_MANAGER_ATTRIBUTE_NAME);
     }

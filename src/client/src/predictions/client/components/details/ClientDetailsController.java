@@ -222,7 +222,7 @@ public class ClientDetailsController implements Initializable {
                 this::updateSimulationList,
                 this::showAlert);
         timer = new Timer();
-        timer.schedule(listRefresher, 2000, 2000);
+        timer.schedule(listRefresher, 0, 2000);
     }
 
     public void closeListRefresher() {

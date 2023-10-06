@@ -43,7 +43,7 @@ public class RequestsListRefresher extends TimerTask {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (response.code() == 200) {
+                if (response.isSuccessful()) {
                     String jsonArrayOfAllocations = response.body().string();
                     AllocationDTO[] allocationDTOS = GSON_INSTANCE.fromJson(jsonArrayOfAllocations, AllocationDTO[].class);
                     allocationsListConsumer.accept(Arrays.asList(allocationDTOS));

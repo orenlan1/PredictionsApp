@@ -35,8 +35,11 @@ public class AllocationsManager {
         return null;
     }
 
-    public synchronized Map<Integer,Allocation> getUserAllocations(String name) {
-       return allAllocations.get(name);
+    public synchronized Map<Integer, Allocation> getUserAllocations(String username) {
+        if (!allAllocations.containsKey(username))
+            allAllocations.put(username, new LinkedHashMap<>());
+
+        return allAllocations.get(username);
     }
 
     public synchronized List<Allocation> getAllAllocations() {

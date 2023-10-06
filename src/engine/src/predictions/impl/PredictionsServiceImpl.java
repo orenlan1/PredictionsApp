@@ -144,8 +144,8 @@ public class PredictionsServiceImpl implements PredictionsService {
         return lst;
     }
 
-   /*@Override
-    public Integer runSimulation(ThreadPoolDelegate threadPoolDelegate) {
+    /*@Override
+    public synchronized Integer runSimulation(ThreadPoolDelegate threadPoolDelegate) {
         World newWorld = simulationManager.getMainWorld().deepCopy();
         SimulationExecutor simulationExecutor = new SimulationExecutor(threadPoolDelegate);
         threadPoolDelegate.increaseSimulationsInQueue();

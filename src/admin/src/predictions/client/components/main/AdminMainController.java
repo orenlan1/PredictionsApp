@@ -1,25 +1,20 @@
 package predictions.client.components.main;
 import com.google.gson.reflect.TypeToken;
-import dto.FileReaderDTO;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.jetbrains.annotations.NotNull;
-import predictions.client.components.allocations.AllocationsControlller;
+import predictions.client.components.allocations.AllocationsController;
 import predictions.client.components.management.ManagementController;
 import predictions.client.util.http.HttpAdminClientUtil;
 
@@ -52,7 +47,7 @@ public class AdminMainController extends ResourceBundle {
 
 
     private ManagementController managementController;
-    private AllocationsControlller allocationsControlller;
+    private AllocationsController allocationsController;
 
 
     @FXML
@@ -103,8 +98,8 @@ public class AdminMainController extends ResourceBundle {
             FXMLLoader fxmlLoader = new FXMLLoader(allocationFXML);
             fxmlLoader.setResources(this);
             BorderPane allocationsPane = fxmlLoader.load();
-            allocationsControlller = fxmlLoader.getController();
-            allocationsControlller.setAdminMainController(this);
+            allocationsController = fxmlLoader.getController();
+            allocationsController.setAdminMainController(this);
             String allocationsCss = this.getClass().getResource(ALLOCATIONS_CSS_LOCATION).toExternalForm();
             allocationsPane.getStylesheets().add(allocationsCss);
 
@@ -128,7 +123,7 @@ public class AdminMainController extends ResourceBundle {
 
     @FXML
     void viewAllocations(ActionEvent event) {
-        setMainPanelTo(allocationsControlller.getAllocationScreen());
+        setMainPanelTo(allocationsController.getAllocationScreen());
     }
 
     @FXML

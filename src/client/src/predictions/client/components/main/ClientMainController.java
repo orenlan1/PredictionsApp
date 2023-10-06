@@ -122,9 +122,8 @@ public class ClientMainController {
 
     @FXML
     void viewRequests(ActionEvent event) {
-       // closeRefreshersAndClear();
-        //TODO requestsScreen -> refresher ///DONE
-      //  requestsScreenController.startRequestsListRefresher();
+        closeRefreshersAndClear();
+        requestsScreenController.startRequestsListRefresher();
         setMainPanelTo(requestsScreenController.getRequestScreen());
     }
 

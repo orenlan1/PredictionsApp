@@ -7,12 +7,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import predictions.client.components.main.AdminMainController;
-import predictions.client.components.management.ManagementController;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AllocationsControlller implements Initializable {
+public class AllocationsController implements Initializable {
 
     @FXML
     private TableView<?> allocationsTable;

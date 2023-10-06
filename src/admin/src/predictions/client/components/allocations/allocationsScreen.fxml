@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="allocationScreen" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="predictions.client.components.allocations.AllocationsControlller">
+<BorderPane fx:id="allocationScreen" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="predictions.client.components.allocations.AllocationsController">
    <center>
       <TableView fx:id="allocationsTable" minHeight="40.0" prefWidth="750.0" BorderPane.alignment="CENTER">
         <columns>

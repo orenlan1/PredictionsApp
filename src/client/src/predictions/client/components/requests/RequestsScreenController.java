@@ -94,9 +94,6 @@ public class RequestsScreenController {
         statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
         currentlyRunningColumn.setCellValueFactory(cellData -> cellData.getValue().currentlyRunningProperty().asObject());
         finishedRunningColumn.setCellValueFactory(cellData -> cellData.getValue().finishedRunningProperty().asObject());
-
-
-
     }
 
     public BorderPane getRequestScreen() {
@@ -130,21 +127,25 @@ public class RequestsScreenController {
         HttpClientUtil.runAsyncPost(finalUrl, body, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, e.getMessage()));
+                showAlert(Alert.AlertType.ERROR, e.getMessage());
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 Platform.runLater(() ->  {
-                    showAlert(Alert.AlertType.INFORMATION, "Request sent successfully!");
-                    String responseBody = null;
                     try {
-                        responseBody = response.body().string();
+                        String responseBody = response.body().string();
+                        if (response.isSuccessful()) {
+                            showAlert(Alert.AlertType.INFORMATION, "Request sent successfully!");
+
+                            Integer allocationId = GSON_INSTANCE.fromJson(responseBody, Integer.class);
+                            tableData.add(new RequestData(simulationName, desiredAmount, allocationId));
+                        } else {
+                            showAlert(Alert.AlertType.ERROR, responseBody);
+                        }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    Integer allocationId = GSON_INSTANCE.fromJson(responseBody,Integer.class);
-                    tableData.add(new RequestData(simulationName,desiredAmount,allocationId));
                 });
             }
         });
@@ -167,7 +168,7 @@ public class RequestsScreenController {
     public void updateRequestsTable(List<AllocationDTO> allocationDTOList) {
         Platform.runLater(() -> {
             for (AllocationDTO allocation : allocationDTOList) {
-                RequestData request = getRequestByUniqueId(idColumn,allocation.getId());
+                RequestData request = getRequestByUniqueId(idColumn, allocation.getId());
                 request.setStatus(allocation.getStatus());
                 request.setCurrentlyRunning(allocation.getExecutionsRunningCount());
                 request.setFinishedRunning(allocation.getExecutionsFinishedCount());
@@ -179,14 +180,16 @@ public class RequestsScreenController {
     public void startRequestsListRefresher() {
         requestsListRefresher = new RequestsListRefresher(this::updateRequestsTable);
         timer = new Timer();
-        timer.schedule(requestsListRefresher, 1000, 1000);
+        timer.schedule(requestsListRefresher, 500, 2000);
     }
 
 
 
     public void showAlert(Alert.AlertType type, String message) {
-        Alert alert = new Alert(type, message);
-        alert.setHeaderText(null);
-        alert.show();
+        Platform.runLater(() -> {
+            Alert alert = new Alert(type, message);
+            alert.setHeaderText(null);
+            alert.show();
+        });
     }
 }
