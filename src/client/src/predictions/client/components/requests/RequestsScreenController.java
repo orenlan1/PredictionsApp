@@ -183,7 +183,12 @@ public class RequestsScreenController {
         timer.schedule(requestsListRefresher, 500, 2000);
     }
 
-
+    public void closeRequestsListRefresher() {
+        if (requestsListRefresher != null && timer != null) {
+            requestsListRefresher.cancel();
+            timer.cancel();
+        }
+    }
 
     public void showAlert(Alert.AlertType type, String message) {
         Platform.runLater(() -> {

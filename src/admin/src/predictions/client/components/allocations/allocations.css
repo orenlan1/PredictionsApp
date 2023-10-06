@@ -1,0 +1,30 @@
+.table-view .column-header-background .label {
+    -fx-font-family: Verdana;
+    -fx-font-weight:bold;
+    -fx-font-size: 14px;
+}
+
+.table-cell {
+    -fx-padding:10px;
+    -fx-font-size: 12px;
+}
+
+.handleButton {
+    -fx-pref-width: 60px;
+    -fx-min-width: 60px;
+    -fx-max-width: 60px;
+
+    -fx-pref-height: 30px;
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
+
+    -fx-font-size: 12px;
+}
+
+#acceptButton {
+    -fx-background-color: #9df7a2;
+}
+
+#rejectButton {
+    -fx-background-color: #f79d9d;
+}

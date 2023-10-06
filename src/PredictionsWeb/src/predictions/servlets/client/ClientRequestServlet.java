@@ -53,21 +53,18 @@ public class ClientRequestServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter writer = resp.getWriter();
+        resp.setContentType("application/json");
         List<AllocationDTO> allocationDTOList = new ArrayList<>();
         AllocationsManager allocationsManager = ServletUtils.getAllocationsManager(getServletContext());
         String usernameFromSession = SessionUtils.getUsername(req);
         for (Allocation allocation : allocationsManager.getUserAllocations(usernameFromSession).values()) {
             if (allocation.isUpdated()) {
-                AllocationDTO allocationDTO = new AllocationDTO(allocation.getSimulationName(),allocation.getExecutionsFinishedAmount()
-                ,allocation.getExecutionsRunningCount(),allocation.getId(),allocation.getStatus(),null,null,allocation.getExecutionsRequestedCount());
+                AllocationDTO allocationDTO = new AllocationDTO(allocation.getSimulationName(), allocation.getExecutionsFinishedAmount(),
+                        allocation.getExecutionsRunningCount(), allocation.getId(), allocation.getStatus(), null, null,
+                        allocation.getExecutionsRequestedCount());
                 allocationDTOList.add(allocationDTO);
             }
         }
-        if (allocationDTOList.isEmpty())
-            resp.setStatus(HttpServletResponse.SC_CONTINUE);
-        else {
-            writer.println(new Gson().toJson(allocationDTOList));
-        }
+        resp.getWriter().println(new Gson().toJson(allocationDTOList));
     }
 }

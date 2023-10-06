@@ -141,6 +141,7 @@ public class ClientMainController {
 
     public void closeRefreshersAndClear() {
         clientDetailsController.closeListRefresher();
+        requestsScreenController.closeRequestsListRefresher();
 
         clearMainPanel();
     }

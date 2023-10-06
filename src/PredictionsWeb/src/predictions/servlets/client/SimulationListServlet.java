@@ -15,7 +15,6 @@ import java.util.Set;
 @WebServlet (name = "SimulationListServlet", urlPatterns = {"/simulations/names"})
 public class SimulationListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //returning JSON objects, not HTML
         response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
             Gson gson = new Gson();
