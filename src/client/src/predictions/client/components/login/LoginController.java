@@ -85,7 +85,7 @@ public class LoginController {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (response.isSuccessful()) {
+                if (!response.isSuccessful()) {
                     String responseBody = response.body().string();
                     Platform.runLater(() ->
                             showAlert("Something went wrong: " + responseBody)

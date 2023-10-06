@@ -27,6 +27,9 @@ public class AdminClient extends Application {
 
             adminMainController.setPrimaryStage(primaryStage);
 
+            //adminMainController.initCheckAdminAlive(); //TODO remember to uncomment
+
+
             Scene scene = new Scene(mainScrollPane,1400,800);
             String mainCss = this.getClass().getResource(MAIN_CSS_LOCATION).toExternalForm();
             scene.getStylesheets().add(mainCss);

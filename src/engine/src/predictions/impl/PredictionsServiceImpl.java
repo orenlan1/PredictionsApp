@@ -26,10 +26,12 @@ import world.simulation.SimulationInfoBuilder;
 import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 
 public class PredictionsServiceImpl implements PredictionsService {
     private SimulationExecutionManager simulationManager;
+    boolean isAdminAlive = false;
 
 
     public PredictionsServiceImpl() {
@@ -53,6 +55,14 @@ public class PredictionsServiceImpl implements PredictionsService {
        return new FileReaderDTO(Boolean.TRUE, null, new GridDTO(grid.getRows(), grid.getCols()), mainWorld.getName());
     }
 
+    public boolean isAdminAlive() {
+        return isAdminAlive;
+    }
+
+    public void setAdmin() {
+        isAdminAlive = true;
+    }
+
     @Override
     public void setThreadCount(Integer threadCount) {
         simulationManager.setThreadCount(threadCount);
@@ -62,6 +72,19 @@ public class PredictionsServiceImpl implements PredictionsService {
     public SimulationInfoDTO getSimulationInformation(String name) {
         SimulationInfoBuilder simulationInfoBuilder = new SimulationInfoBuilder();
         return simulationInfoBuilder.createSimulationInfo(simulationManager.getMainWorld(name));
+    }
+
+
+    public List<SimulationInfoDTO> getAllSimulationsInformation() {
+        Collection<String> allNames = simulationManager.getAllSimulationNames();
+        if ( allNames.isEmpty()) {
+            return null;
+        }
+        else {
+            return allNames.stream()
+                    .map(this::getSimulationInformation)
+                    .collect(Collectors.toList());
+        }
     }
 
     @Override

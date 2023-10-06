@@ -13,6 +13,10 @@ public class Termination implements Serializable {
         this.byUser = byUser;
     }
 
+    public Boolean getByUser() {
+        return byUser;
+    }
+
     public Integer getTicksCount() {
         return ticksCount;
     }

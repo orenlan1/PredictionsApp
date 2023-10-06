@@ -73,7 +73,7 @@ public class DTOFactory {
     }
 
     public TerminationDTO createTerminationDTO(Termination termination) {
-        return new TerminationDTO(termination.getTicksCount(), termination.getSecondCount());
+        return new TerminationDTO(termination.getTicksCount(), termination.getSecondCount(), termination.getByUser());
     }
 
     public EnvVariablesDTO createEnvVariableDTO(PropertyInstance envVariable) {

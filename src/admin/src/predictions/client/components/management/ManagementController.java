@@ -30,7 +30,9 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-
+import java.util.List;
+import java.util.Collection;
+import java.util.ArrayList;
 import predictions.client.components.management.details.entity.EntityCardController;
 import predictions.client.components.management.details.environment.variable.EnvVariableCardController;
 import predictions.client.components.management.details.grid.GridCardController;
@@ -102,6 +104,7 @@ public class ManagementController implements Initializable {
     private ObservableList<String> tableData = FXCollections.observableArrayList();
 
     private Map<String,String> simNameToFilePath = new HashMap<>();
+    private List<String> simulationsNames = new ArrayList<>();
 
     private AdminMainController adminMainController;
     private final SimpleStringProperty loadedFilePathProperty;
@@ -153,11 +156,16 @@ public class ManagementController implements Initializable {
         });
     }
 
+    public void setInitSimulationsNames(Collection<String> allNames) {
+        simulationsNames.addAll(allNames);
+        tableData.addAll(allNames);
+        isFileLoaded.set(true);
+    }
 
     @FXML
     void clearDetails(ActionEvent event) {
-        detailsFlowPane.getChildren().clear();
         detailsBorderPane.setCenter(detailsScrollPane);
+        detailsFlowPane.getChildren().clear();
     }
 
     @FXML
@@ -203,6 +211,35 @@ public class ManagementController implements Initializable {
                 alert.show();
             }
         }
+
+//        HttpAdminClientUtil.asyncFileLoad(finalUrl, body, new Callback() {
+//            @Override
+//            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+//                Alert alert = new Alert(Alert.AlertType.ERROR,"something went wrong" );
+//                alert.setHeaderText(null);
+//                alert.show();
+//            }
+//
+//            @Override
+//            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+//                if (response.isSuccessful()) {
+//                    ResponseBody responseBody = response.body();
+//
+//                    String rawBody = responseBody.string();
+//                    FileReaderDTO fileReaderDTO = GSON_INSTANCE.fromJson(rawBody, FileReaderDTO.class);
+//                    boolean isValid = fileReaderDTO.isValid();
+//                    if (isValid) {
+//                        isFileLoaded.set(true);
+//                    } else {
+//                        String error = fileReaderDTO.getError();
+//                        Alert alert = new Alert(Alert.AlertType.ERROR, error);
+//                        alert.setHeaderText(null);
+//                        alert.show();
+//                    }
+//
+//                }
+//            }
+//        });
     }
 
     @FXML

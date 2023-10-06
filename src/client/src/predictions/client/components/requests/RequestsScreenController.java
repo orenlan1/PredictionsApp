@@ -1,14 +1,27 @@
 package predictions.client.components.requests;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
+import dto.AllocationDTO;
+import dto.RequestDTO;
+import dto.TerminationDTO;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
+import predictions.client.components.details.SimulationListRefresher;
+import predictions.client.util.http.HttpClientUtil;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static predictions.client.util.Constants.GSON_INSTANCE;
+import static predictions.client.util.Constants.PREFIX_BASE_URL;
 
 public class RequestsScreenController {
 
@@ -16,25 +29,25 @@ public class RequestsScreenController {
     private BorderPane requestScreen;
 
     @FXML
-    private TableColumn<?, ?> currentlyRunningColumn;
+    private TableColumn<RequestData, Integer> currentlyRunningColumn;
 
     @FXML
-    private TableColumn<?, ?> finishedRunningColumn;
+    private TableColumn<RequestData, Integer> finishedRunningColumn;
 
     @FXML
-    private TableColumn<?, ?> idColumn;
+    private TableColumn<RequestData, Integer> idColumn;
 
     @FXML
-    private TableColumn<?, ?> nameColumn;
+    private TableColumn<RequestData, String> nameColumn;
 
     @FXML
-    private TableColumn<?, ?> statusColumn;
+    private TableColumn<RequestData, String> statusColumn;
 
     @FXML
-    private TableColumn<?, ?> requestedAmountColumn;
+    private TableColumn<RequestData, Integer> requestedAmountColumn;
 
     @FXML
-    private TableView<String> requestsTable;
+    private TableView<RequestData> requestsTable;
 
     @FXML
     private CheckBox secondsCheckbox;
@@ -57,7 +70,10 @@ public class RequestsScreenController {
     @FXML
     private Button sendButton;
 
-    private ObservableList<String> tableData = FXCollections.observableArrayList();
+    private ObservableList<RequestData> tableData = FXCollections.observableArrayList();
+    private TimerTask requestsListRefresher;
+    private Timer timer;
+
 
 
     @FXML
@@ -70,6 +86,16 @@ public class RequestsScreenController {
         secondsField.textProperty().addListener((obs, oldValue, newValue) -> textFieldValidation(secondsField, oldValue, newValue));
         ticksField.textProperty().addListener((obs, oldValue, newValue) -> textFieldValidation(ticksField, oldValue, newValue));
         sendButton.disableProperty().bind(simulationNameField.textProperty().isEmpty().or(simulationNumField.textProperty().isEmpty()));
+
+
+        idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
+        nameColumn.setCellValueFactory(cellData -> cellData.getValue().simulationNameProperty());
+        requestedAmountColumn.setCellValueFactory(cellData -> cellData.getValue().requestedAmountProperty().asObject());
+        statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
+        currentlyRunningColumn.setCellValueFactory(cellData -> cellData.getValue().currentlyRunningProperty().asObject());
+        finishedRunningColumn.setCellValueFactory(cellData -> cellData.getValue().finishedRunningProperty().asObject());
+
+
 
     }
 
@@ -89,6 +115,78 @@ public class RequestsScreenController {
 
     @FXML
     public void sendRequest(ActionEvent event) {
+        String simulationName = simulationNameField.getText();
+        Integer desiredAmount = Integer.parseInt(simulationNumField.getText());
+        Integer seconds = (secondsCheckbox.isSelected() && !secondsField.getText().isEmpty()) ? Integer.parseInt(secondsField.getText()) : null;
+        Integer ticks = (ticksCheckbox.isSelected() && !ticksField.getText().isEmpty()) ? Integer.parseInt(ticksField.getText()) : null;
+        boolean byUser = seconds == null && ticks == null;
 
+        RequestDTO dto = new RequestDTO(simulationName, desiredAmount, new TerminationDTO(ticks, seconds, byUser));
+        String dtoAsJson = GSON_INSTANCE.toJson(dto);
+
+        RequestBody body = RequestBody.create(MediaType.get("application/json; charset=utf-8"), dtoAsJson);
+        String finalUrl = PREFIX_BASE_URL + "/client/request";
+
+        HttpClientUtil.runAsyncPost(finalUrl, body, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, e.getMessage()));
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                Platform.runLater(() ->  {
+                    showAlert(Alert.AlertType.INFORMATION, "Request sent successfully!");
+                    String responseBody = null;
+                    try {
+                        responseBody = response.body().string();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    Integer allocationId = GSON_INSTANCE.fromJson(responseBody,Integer.class);
+                    tableData.add(new RequestData(simulationName,desiredAmount,allocationId));
+                });
+            }
+        });
+
+    }
+
+
+    public RequestData getRequestByUniqueId( TableColumn<RequestData, Integer> idColumn, int targetId) {
+        ObservableList<RequestData> tableData = requestsTable.getItems();
+
+        for (RequestData request : tableData) {
+            int requestId = idColumn.getCellData(request);
+            if (requestId == targetId) {
+                return request;
+            }
+        }
+        return null; // Item not found
+    }
+
+    public void updateRequestsTable(List<AllocationDTO> allocationDTOList) {
+        Platform.runLater(() -> {
+            for (AllocationDTO allocation : allocationDTOList) {
+                RequestData request = getRequestByUniqueId(idColumn,allocation.getId());
+                request.setStatus(allocation.getStatus());
+                request.setCurrentlyRunning(allocation.getExecutionsRunningCount());
+                request.setFinishedRunning(allocation.getExecutionsFinishedCount());
+            }
+        });
+    }
+
+
+    public void startRequestsListRefresher() {
+        requestsListRefresher = new RequestsListRefresher(this::updateRequestsTable);
+        timer = new Timer();
+        timer.schedule(requestsListRefresher, 1000, 1000);
+    }
+
+
+
+    public void showAlert(Alert.AlertType type, String message) {
+        Alert alert = new Alert(type, message);
+        alert.setHeaderText(null);
+        alert.show();
     }
 }

@@ -14,6 +14,10 @@ public interface PredictionsService {
     FileReaderDTO readFileAndLoad(InputStream fileContent);
     void setThreadCount(Integer threadCount);
     SimulationInfoDTO getSimulationInformation(String name);
+    List<SimulationInfoDTO> getAllSimulationsInformation();
+
+    boolean isAdminAlive();
+    void setAdmin();
     void randomizeEnvProperties(String name);
     PropertiesDTO getEnvPropertiesDTO(String name);
     EnvVariableSetValidationDTO setEnvironmentVariables(String name, List<UserInputEnvironmentVariableDTO> DTOs);

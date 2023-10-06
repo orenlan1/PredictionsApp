@@ -1,17 +1,20 @@
 package predictions.utils;
 
 import jakarta.servlet.ServletContext;
+import predictions.allocations.AllocationsManager;
 import predictions.users.UserManager;
 
 public class ServletUtils {
 
     private static final String USER_MANAGER_ATTRIBUTE_NAME = "userManager";
 
+    private static final String ALLOCATIONS_MANAGER_ATTRIBUTE_NAME = "allocationsManager";
     /*
     Note how the synchronization is done only on the question and\or creation of the relevant managers and once they exists -
     the actual fetch of them is remained un-synchronized for performance POV
      */
     private static final Object userManagerLock = new Object();
+    private static final Object allocationsManager = new Object();
 
     public static UserManager getUserManager(ServletContext servletContext) {
 
@@ -22,5 +25,15 @@ public class ServletUtils {
         }
         return (UserManager) servletContext.getAttribute(USER_MANAGER_ATTRIBUTE_NAME);
     }
+
+    public static AllocationsManager getAllocationsManager(ServletContext servletContext) {
+        if (servletContext.getAttribute(ALLOCATIONS_MANAGER_ATTRIBUTE_NAME) == null ) {
+            servletContext.setAttribute(ALLOCATIONS_MANAGER_ATTRIBUTE_NAME, new AllocationsManager());
+        }
+        return (AllocationsManager) servletContext.getAttribute(ALLOCATIONS_MANAGER_ATTRIBUTE_NAME);
+    }
+
+
+
 
 }

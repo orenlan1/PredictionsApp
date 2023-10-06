@@ -15,6 +15,16 @@ public class HttpAdminClientUtil {
         call.enqueue(callback);
     }
 
+    public static Response runSync(String finalUrl) throws Exception {
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .build();
+
+        Call call = HTTP_CLIENT.newCall(request);
+
+        return call.execute();
+    }
+
     public static void asyncFileLoad(String finalUrl, RequestBody body, Callback callback) {
         Request request = new Request.Builder()
                 .url(finalUrl)
