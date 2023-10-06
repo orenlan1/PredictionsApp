@@ -1,9 +1,6 @@
 package predictions.client.util.http;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import okhttp3.*;
 
 public class HttpClientUtil {
     public final static OkHttpClient HTTP_CLIENT = new OkHttpClient();
@@ -11,6 +8,17 @@ public class HttpClientUtil {
     public static void runAsync(String finalUrl, Callback callback) {
         Request request = new Request.Builder()
                 .url(finalUrl)
+                .build();
+
+        Call call = HTTP_CLIENT.newCall(request);
+
+        call.enqueue(callback);
+    }
+
+    public static void runAsyncPost(String finalUrl, RequestBody body, Callback callback) {
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .post(body)
                 .build();
 
         Call call = HTTP_CLIENT.newCall(request);
